@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraftStudio - Freebies & Digital Coloring Books</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-effect { background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-rose-500 selection:text-white">
+
+    <!-- ==================== ADMIN TOP STATUS BAR (ONLY VISIBLE WHEN LOGGED IN) ==================== -->
+    <div id="admin-top-banner" class="hidden bg-slate-900 text-white px-4 py-2.5 text-xs sm:text-sm border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+                <span class="inline-flex items-center gap-1.5 bg-emerald-500 text-slate-950 font-extrabold px-2.5 py-0.5 rounded-full text-xs">
+                    <span class="w-2 h-2 rounded-full bg-slate-950 animate-pulse"></span> ADMIN MODE
+                </span>
+                <span id="banner-admin-email" class="text-slate-300 hidden sm:inline">Logged in as Admin</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="toggle-mode-btn" onclick="toggleAdminUserView()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1 rounded-lg text-xs transition flex items-center gap-1.5">
+                    <i class="fas fa-sliders-h"></i> <span>Go to Admin Panel</span>
+                </button>
+                <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-3 py-1 rounded-lg text-xs transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="sticky top-0 z-40 glass-effect border-b border-slate-200/80" id="main-navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchView('user')">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white font-bold shadow-md shadow-rose-500/20">
+                    <i class="fas fa-sparkles"></i>
+                </div>
+                <span class="font-extrabold text-xl tracking-tight text-slate-900">Craft<span class="text-rose-500">Studio</span></span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="#freebie-section" onclick="switchView('user')" class="text-sm font-semibold text-slate-600 hover:text-rose-500 transition">Free Gifts</a>
+                <a href="#store-section" onclick="switchView('user')" class="text-sm font-semibold text-slate-600 hover:text-rose-500 transition">Premium Books</a>
+                
+                <!-- Role Badge -->
+                <span id="role-indicator-badge" class="text-xs font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-500">
+                    Visitor
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== 1. USER LANDING VIEW ==================== -->
+    <main id="user-view" class="block">
+        
+        <!-- HERO: FREE DOWNLOAD SECTION -->
+        <section id="freebie-section" class="pt-10 pb-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12">
+                    
+                    <!-- Left: Freebie Preview Image -->
+                    <div class="lg:col-span-6 bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 p-8 sm:p-12 flex items-center justify-center relative">
+                        <span class="absolute top-6 left-6 bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
+                            100% Free Download
+                        </span>
+                        <img id="display-freebie-img" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80" alt="Freebie Preview" class="w-full max-w-md rounded-2xl shadow-2xl object-cover aspect-[4/3] border-4 border-white transform hover:scale-[1.02] transition duration-300">
+                    </div>
+
+                    <!-- Right: Freebie Copy & Download Action -->
+                    <div class="lg:col-span-6 p-8 sm:p-12 flex flex-col justify-center">
+                        <div class="inline-flex items-center gap-2 text-rose-500 font-bold text-sm mb-3">
+                            <i class="fas fa-gift"></i> PINTEREST EXCLUSIVE GIFT
+                        </div>
+                        <h1 id="display-freebie-title" class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+                            3D Whimsical Holiday Sticker Pack
+                        </h1>
+                        <p id="display-freebie-desc" class="text-slate-600 text-base leading-relaxed mb-8">
+                            Download this high-resolution printable pack completely free! Print at home or use digitally on your iPad.
+                        </p>
+
+                        <div class="space-y-4">
+                            <a id="display-freebie-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base px-8 py-4 rounded-xl shadow-lg shadow-emerald-600/25 transition transform active:scale-95">
+                                <i class="fas fa-cloud-download-alt text-lg"></i>
+                                Download Free Pack Now
+                            </a>
+                            <p class="text-xs text-slate-400 flex items-center gap-1.5">
+                                <i class="fas fa-check-circle text-emerald-500"></i> Instant PDF/PNG access • No credit card required
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- STORE: ROCKETR PREMIUM BOOKS SECTION -->
+        <section id="store-section" class="py-16 bg-slate-100/70 border-t border-slate-200/60 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-rose-500 font-bold text-xs uppercase tracking-widest">Full Collections</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mt-2 mb-3">Want the Complete Edition?</h2>
+                    <p class="text-slate-600">Explore our full-length digital books and mega bundles. Instant delivery powered by Rocketr.</p>
+                </div>
+
+                <!-- Dynamic Product Grid -->
+                <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="col-span-full text-center py-12 text-slate-400">
+                        <p>Loading digital books...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== 2. ADMIN DASHBOARD VIEW ==================== -->
+    <section id="admin-view" class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Admin Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 mb-8">
+            <div>
+                <div class="flex items-center gap-2.5">
+                    <span class="bg-slate-900 text-white text-xs font-extrabold px-2.5 py-1 rounded-md">ADMIN PANEL</span>
+                    <h1 class="text-2xl font-extrabold text-slate-900">Content & Store Settings</h1>
+                </div>
+                <p id="admin-user-email" class="text-sm text-slate-500 mt-1">Manage Freebies, Rocketr Links, Images, and Text.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="switchView('user')" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition">
+                    <i class="fas fa-eye mr-1.5"></i> View as User
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="flex gap-2 border-b border-slate-200 mb-8 overflow-x-auto">
+            <button onclick="switchAdminTab('products')" id="tab-products" class="admin-tab px-5 py-3 text-sm font-bold border-b-2 border-rose-500 text-rose-600">
+                <i class="fas fa-book mr-2"></i>Rocketr Books (Add / Edit / Delete)
+            </button>
+            <button onclick="switchAdminTab('freebie')" id="tab-freebie" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                <i class="fas fa-gift mr-2"></i>Freebie Section
+            </button>
+            <button onclick="switchAdminTab('security')" id="tab-security" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                <i class="fas fa-shield-alt mr-2"></i>Admin Password
+            </button>
+        </div>
+
+        <!-- TAB 1: ROCKETR PRODUCTS MANAGER (ADD, EDIT, DELETE) -->
+        <div id="panel-products" class="admin-panel grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Add / Edit Product Form -->
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
+                <div class="flex items-center justify-between mb-5">
+                    <h3 id="product-form-heading" class="text-lg font-bold text-slate-900">Add New Rocketr Book</h3>
+                    <button type="button" id="cancel-edit-btn" onclick="resetProductForm()" class="hidden text-xs font-bold text-slate-500 hover:text-rose-600 underline">
+                        Cancel Edit
+                    </button>
+                </div>
+
+                <form id="product-form" class="space-y-4">
+                    <input type="hidden" id="edit-prod-id" value="">
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Book Title</label>
+                        <input type="text" id="prod-title" required placeholder="e.g., 100-Page Christmas Coloring Book" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Price Tag</label>
+                        <input type="text" id="prod-price" required placeholder="e.g., $9.99" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Description Text</label>
+                        <textarea id="prod-desc" rows="3" required placeholder="Describe what is included in this book..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Cover Image (Upload File or Paste URL)</label>
+                        <input type="text" id="prod-img" required placeholder="https://..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm mb-2">
+                        <input type="file" id="prod-file-upload" accept="image/*" class="text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-600 hover:file:bg-rose-100">
+                        <p id="prod-upload-status" class="text-xs text-emerald-600 mt-1 hidden font-medium"></p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Rocketr Link</label>
+                        <input type="url" id="prod-link" required placeholder="https://rocketr.net/buy/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                    </div>
+                    <button type="submit" id="publish-prod-btn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl transition text-sm shadow-md shadow-rose-600/20">
+                        <i class="fas fa-plus mr-1.5"></i> Publish Book to Store
+                    </button>
+                </form>
+            </div>
+
+            <!-- Existing Products List -->
+            <div class="lg:col-span-7 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">Published Rocketr Books</h3>
+                    <span id="product-count-badge" class="text-xs font-bold bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full">0 Books</span>
+                </div>
+                <div id="admin-products-list" class="space-y-3">
+                    <!-- Admin product items injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: FREEBIE MANAGER -->
+        <div id="panel-freebie" class="admin-panel hidden bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm max-w-3xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-slate-900">Edit Free Download Section</h3>
+                <button type="button" onclick="resetFreebieToDefault()" class="text-xs font-semibold text-rose-600 hover:underline">
+                    <i class="fas fa-trash-alt mr-1"></i> Reset / Clear
+                </button>
+            </div>
+            <form id="freebie-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Freebie Title</label>
+                    <input type="text" id="input-freebie-title" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Description Text</label>
+                    <textarea id="input-freebie-desc" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none"></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cover Image (Upload or URL)</label>
+                        <input type="text" id="input-freebie-img" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none mb-2" placeholder="https://...">
+                        <input type="file" id="freebie-file-upload" accept="image/*" class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-600 hover:file:bg-rose-100">
+                        <p id="freebie-upload-status" class="text-xs text-emerald-600 mt-1 hidden font-medium"></p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Free Download Link (Drive / Dropbox)</label>
+                        <input type="url" id="input-freebie-link" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none" placeholder="https://drive.google.com/...">
+                    </div>
+                </div>
+                <button type="submit" id="save-freebie-btn" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl transition flex items-center gap-2">
+                    <i class="fas fa-save"></i> Save & Update Freebie
+                </button>
+            </form>
+        </div>
+
+        <!-- TAB 3: ADMIN SETTINGS & SECURITY -->
+        <div id="panel-security" class="admin-panel hidden max-w-3xl space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Change Admin Password</h3>
+                <p class="text-sm text-slate-500 mb-6">Update your Firebase Admin login password.</p>
+                
+                <form id="change-password-form" class="space-y-4 max-w-md">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">New Password (Min 6 characters)</label>
+                        <input type="password" id="new-pass" required minlength="6" class="w-full px-4 py-2 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-rose-500">
+                    </div>
+                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                        Update Password
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-white border-t border-slate-200 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>© 2026 CraftStudio. All digital downloads are for personal use.</p>
+            <button id="footer-admin-btn" onclick="openLoginModal()" class="text-slate-400 hover:text-slate-700 transition text-xs flex items-center gap-1.5 p-2">
+                <i class="fas fa-lock"></i> <span>Admin Login</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- ==================== ADMIN LOGIN MODAL ==================== -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-extrabold text-lg text-slate-900">Admin Login</h3>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div id="protocol-warning" class="hidden bg-amber-50 border border-amber-300 text-amber-900 text-xs p-3 rounded-xl mb-3 leading-relaxed">
+                <strong>⚠️ Local File Detected:</strong> Please open this website via your <strong>Vercel URL</strong> (<code>https://...vercel.app</code>) for Admin Login to work.
+            </div>
+
+            <form id="admin-login-form" class="space-y-3.5">
+                <div>
+                    <input type="email" id="login-email-input" required placeholder="Admin Email" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                </div>
+                <div>
+                    <input type="password" id="login-password-input" required placeholder="Password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                </div>
+                <p id="login-error" class="text-xs text-rose-600 hidden font-semibold bg-rose-50 p-2.5 rounded-lg border border-rose-200"></p>
+                <button type="submit" id="login-submit-btn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-sm">
+                    Sign In as Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== UI HELPER SCRIPT ==================== -->
+    <script>
+        window.currentActiveView = 'user';
+        window.productsCache = {}; // Store products locally for instant Edit population
+
+        window.switchView = function(view) {
+            if (view === 'admin' && !window.firebaseCurrentUser) {
+                window.openLoginModal();
+                return;
+            }
+            window.currentActiveView = view;
+            document.getElementById('user-view').style.display = view === 'user' ? 'block' : 'none';
+            document.getElementById('admin-view').style.display = view === 'admin' ? 'block' : 'none';
+            
+            // Update Top Banner Toggle Button Text
+            const toggleBtn = document.getElementById('toggle-mode-btn');
+            if (toggleBtn) {
+                if (view === 'admin') {
+                    toggleBtn.innerHTML = `<i class="fas fa-eye"></i> <span>Preview User Page</span>`;
+                    toggleBtn.classList.replace('bg-rose-600', 'bg-emerald-600');
+                    toggleBtn.classList.replace('hover:bg-rose-700', 'hover:bg-emerald-700');
+                } else {
+                    toggleBtn.innerHTML = `<i class="fas fa-sliders-h"></i> <span>Go to Admin Panel</span>`;
+                    toggleBtn.classList.replace('bg-emerald-600', 'bg-rose-600');
+                    toggleBtn.classList.replace('hover:bg-emerald-700', 'hover:bg-rose-700');
+                }
+            }
+            window.scrollTo(0, 0);
+        };
+
+        window.toggleAdminUserView = function() {
+            window.switchView(window.currentActiveView === 'admin' ? 'user' : 'admin');
+        };
+
+        window.switchAdminTab = function(tabName) {
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`panel-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.admin-tab').forEach(t => {
+                t.classList.remove('border-rose-500', 'text-rose-600', 'font-bold');
+                t.classList.add('border-transparent', 'text-slate-500', 'font-semibold');
+            });
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.add('border-rose-500', 'text-rose-600', 'font-bold');
+            activeTab.classList.remove('border-transparent', 'text-slate-500', 'font-semibold');
+        };
+
+        window.openLoginModal = function() {
+            if (window.firebaseCurrentUser) {
+                window.switchView('admin');
+                return;
+            }
+            if (window.location.protocol === 'content:' || window.location.protocol === 'file:') {
+                document.getElementById('protocol-warning').classList.remove('hidden');
+            }
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-email-input').focus();
+        };
+
+        window.closeLoginModal = function() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+        };
+
+        // Populate Form for Editing an Existing Product
+        window.editProduct = function(docId) {
+            const p = window.productsCache[docId];
+            if (!p) return;
+
+            document.getElementById('edit-prod-id').value = docId;
+            document.getElementById('prod-title').value = p.title;
+            document.getElementById('prod-price').value = p.price;
+            document.getElementById('prod-desc').value = p.desc;
+            document.getElementById('prod-img').value = p.img;
+            document.getElementById('prod-link').value = p.rocketrLink;
+
+            document.getElementById('product-form-heading').innerText = "Edit Rocketr Book";
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            
+            const btn = document.getElementById('publish-prod-btn');
+            btn.innerHTML = `<i class="fas fa-check mr-1.5"></i> Update Book Changes`;
+            btn.classList.replace('bg-rose-600', 'bg-emerald-600');
+            btn.classList.replace('hover:bg-rose-700', 'hover:bg-emerald-700');
+
+            // Scroll smoothly to form
+            document.getElementById('product-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        window.resetProductForm = function() {
+            document.getElementById('product-form').reset();
+            document.getElementById('edit-prod-id').value = "";
+            document.getElementById('product-form-heading').innerText = "Add New Rocketr Book";
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            document.getElementById('prod-upload-status').classList.add('hidden');
+
+            const btn = document.getElementById('publish-prod-btn');
+            btn.innerHTML = `<i class="fas fa-plus mr-1.5"></i> Publish Book to Store`;
+            btn.classList.replace('bg-emerald-600', 'bg-rose-600');
+            btn.classList.replace('hover:bg-emerald-700', 'hover:bg-rose-700');
+        };
+    </script>
+
+    <!-- ==================== FIREBASE SDK & LOGIC ==================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, deleteDoc, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBS6G-mexA_toDRo9RAAFDm1_ExtZj_PMc",
+            authDomain: "coloring-book-b154e.firebaseapp.com",
+            projectId: "coloring-book-b154e",
+            storageBucket: "coloring-book-b154e.firebasestorage.app",
+            messagingSenderId: "949610623419",
+            appId: "1:949610623419:web:10deda5e9c8fda63c9949e",
+            measurementId: "G-DGKY8PKZK0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        window.firebaseCurrentUser = null;
+
+        // 1. Auth State Listener (Clearly distinguishes Admin vs User)
+        onAuthStateChanged(auth, (user) => {
+            window.firebaseCurrentUser = user;
+            const topBanner = document.getElementById('admin-top-banner');
+            const roleBadge = document.getElementById('role-indicator-badge');
+            const footerBtn = document.getElementById('footer-admin-btn');
+            const navbar = document.getElementById('main-navbar');
+
+            if (user) {
+                // ADMIN LOGGED IN STATE
+                topBanner.classList.remove('hidden');
+                navbar.classList.remove('top-0');
+                navbar.classList.add('top-[41px]'); // Offset below top admin banner
+                
+                document.getElementById('banner-admin-email').innerText = `Admin: ${user.email}`;
+                document.getElementById('admin-user-email').innerText = `Logged in as Admin (${user.email})`;
+                
+                roleBadge.innerText = "Admin";
+                roleBadge.className = "text-xs font-extrabold px-2.5 py-1 rounded-md bg-rose-100 text-rose-600 border border-rose-200";
+                
+                footerBtn.innerHTML = `<i class="fas fa-sliders-h text-rose-500"></i> <span class="font-bold text-slate-700">Open Admin Panel</span>`;
+            } else {
+                // NORMAL USER / VISITOR STATE
+                topBanner.classList.add('hidden');
+                navbar.classList.add('top-0');
+                navbar.classList.remove('top-[41px]');
+
+                roleBadge.innerText = "Visitor";
+                roleBadge.className = "text-xs font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-500";
+                
+                footerBtn.innerHTML = `<i class="fas fa-lock"></i> <span>Admin Login</span>`;
+                window.switchView('user');
+            }
+        });
+
+        // 2. Login Form Submit
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email-input').value.trim();
+            const pass = document.getElementById('login-password-input').value;
+            const errorEl = document.getElementById('login-error');
+            const btn = document.getElementById('login-submit-btn');
+
+            if (window.location.protocol === 'content:' || window.location.protocol === 'file:') {
+                errorEl.innerText = "Cannot login from local file. Deploy to Vercel first!";
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            btn.innerText = "Verifying...";
+            btn.disabled = true;
+            errorEl.classList.add('hidden');
+
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error("Connection timed out. Check your internet/VPN or Firebase Authorized Domains.")), 12000)
+            );
+
+            try {
+                await Promise.race([
+                    signInWithEmailAndPassword(auth, email, pass),
+                    timeoutPromise
+                ]);
+                window.closeLoginModal();
+                window.switchView('admin');
+            } catch (err) {
+                errorEl.innerText = err.message;
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.innerText = "Sign In as Admin";
+                btn.disabled = false;
+            }
+        });
+
+        window.logoutAdmin = async () => {
+            await signOut(auth);
+            window.switchView('user');
+        };
+
+        document.getElementById('change-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return;
+            const newPass = document.getElementById('new-pass').value;
+            try {
+                await updatePassword(window.firebaseCurrentUser, newPass);
+                alert("Password updated successfully!");
+                e.target.reset();
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        });
+
+        // 3. Real-time Firestore Sync: Freebie
+        const freebieDocRef = doc(db, "settings", "freebie");
+        onSnapshot(freebieDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('display-freebie-title').innerText = data.title;
+                document.getElementById('display-freebie-desc').innerText = data.desc;
+                document.getElementById('display-freebie-img').src = data.img;
+                document.getElementById('display-freebie-link').href = data.link;
+
+                document.getElementById('input-freebie-title').value = data.title;
+                document.getElementById('input-freebie-desc').value = data.desc;
+                document.getElementById('input-freebie-img').value = data.img;
+                document.getElementById('input-freebie-link').value = data.link;
+            }
+        });
+
+        // 4. Real-time Firestore Sync: Rocketr Books
+        const productsQuery = query(collection(db, "products"), orderBy("createdAt", "desc"));
+        onSnapshot(productsQuery, (snapshot) => {
+            const grid = document.getElementById('products-grid');
+            const adminList = document.getElementById('admin-products-list');
+            const countBadge = document.getElementById('product-count-badge');
+
+            window.productsCache = {};
+            countBadge.innerText = `${snapshot.size} Books`;
+
+            if (snapshot.empty) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500">New digital books coming soon!</div>`;
+                adminList.innerHTML = `<div class="bg-white p-6 rounded-xl border border-slate-200 text-center text-sm text-slate-400">No books published yet. Add your first Rocketr book on the left!</div>`;
+                return;
+            }
+
+            let userHtml = '';
+            let adminHtml = '';
+
+            snapshot.forEach((docItem) => {
+                const p = docItem.data();
+                const id = docItem.id;
+                window.productsCache[id] = p; // Save for Edit function
+
+                // User Store Card
+                userHtml += `
+                    <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col">
+                        <div class="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                            <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-slate-900/90 text-white font-bold text-sm px-3 py-1 rounded-lg backdrop-blur-sm">
+                                ${p.price}
+                            </span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900 mb-2">${p.title}</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed mb-6">${p.desc}</p>
+                            </div>
+                            <a href="${p.rocketrLink}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm py-3.5 px-5 rounded-xl shadow-md shadow-rose-600/20 transition">
+                                <span>Buy Full Book on Rocketr</span>
+                                <i class="fas fa-arrow-right text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+
+                // Admin List Row with EDIT & DELETE buttons
+                adminHtml += `
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between gap-4 hover:border-slate-300 transition">
+                        <div class="flex items-center gap-3.5 min-w-0">
+                            <img src="${p.img}" class="w-16 h-16 rounded-lg object-cover bg-slate-100 shrink-0 border border-slate-200">
+                            <div class="min-w-0">
+                                <h4 class="font-bold text-sm text-slate-900 truncate">${p.title}</h4>
+                                <p class="text-xs font-semibold text-emerald-600 mt-0.5">${p.price}</p>
+                                <a href="${p.rocketrLink}" target="_blank" class="text-xs text-rose-500 hover:underline truncate block mt-0.5">${p.rocketrLink}</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="editProduct('${id}')" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-700 text-xs font-bold transition flex items-center gap-1" title="Edit Book">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button onclick="deleteProduct('${id}')" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-600 text-xs font-bold transition flex items-center gap-1" title="Delete Book">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = userHtml;
+            adminList.innerHTML = adminHtml;
+        });
+
+        // 5. Image Upload to Firebase Storage
+        async function uploadImageToFirebase(file, statusElementId, targetInputId) {
+            const statusEl = document.getElementById(statusElementId);
+            statusEl.innerText = "Uploading image to Firebase...";
+            statusEl.classList.remove('hidden', 'text-rose-600');
+            statusEl.classList.add('text-amber-600');
+
+            try {
+                const storageRef = ref(storage, `uploads/${Date.now()}_${file.name}`);
+                const snapshot = await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(snapshot.ref);
+                
+                document.getElementById(targetInputId).value = downloadURL;
+                statusEl.innerText = "Image uploaded! Click Save/Publish below.";
+                statusEl.classList.remove('text-amber-600');
+                statusEl.classList.add('text-emerald-600');
+            } catch (error) {
+                statusEl.innerText = "Upload failed: " + error.message;
+                statusEl.classList.remove('text-amber-600');
+                statusEl.classList.add('text-rose-600');
+            }
+        }
+
+        document.getElementById('freebie-file-upload').addEventListener('change', (e) => {
+            if (e.target.files[0]) uploadImageToFirebase(e.target.files[0], 'freebie-upload-status', 'input-freebie-img');
+        });
+
+        document.getElementById('prod-file-upload').addEventListener('change', (e) => {
+            if (e.target.files[0]) uploadImageToFirebase(e.target.files[0], 'prod-upload-status', 'prod-img');
+        });
+
+        // 6. Add OR Update Rocketr Product
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return alert("Unauthorized!");
+            
+            const editId = document.getElementById('edit-prod-id').value;
+            const btn = document.getElementById('publish-prod-btn');
+            btn.disabled = true;
+            btn.innerText = editId ? "Updating..." : "Publishing...";
+
+            const productData = {
+                title: document.getElementById('prod-title').value,
+                price: document.getElementById('prod-price').value,
+                desc: document.getElementById('prod-desc').value,
+                img: document.getElementById('prod-img').value,
+                rocketrLink: document.getElementById('prod-link').value
+            };
+
+            try {
+                if (editId) {
+                    // UPDATE EXISTING BOOK
+                    productData.updatedAt = serverTimestamp();
+                    await updateDoc(doc(db, "products", editId), productData);
+                    alert("Book updated successfully!");
+                } else {
+                    // ADD NEW BOOK
+                    productData.createdAt = serverTimestamp();
+                    await addDoc(collection(db, "products"), productData);
+                    alert("New Rocketr book published!");
+                }
+                window.resetProductForm();
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                if (!document.getElementById('edit-prod-id').value) {
+                    btn.innerHTML = `<i class="fas fa-plus mr-1.5"></i> Publish Book to Store`;
+                }
+            }
+        });
+
+        // 7. Delete Rocketr Product
+        window.deleteProduct = async (docId) => {
+            if (!window.firebaseCurrentUser) return;
+            if (confirm("Are you sure you want to permanently delete this book?")) {
+                try {
+                    await deleteDoc(doc(db, "products", docId));
+                    if (document.getElementById('edit-prod-id').value === docId) {
+                        window.resetProductForm();
+                    }
+                } catch (err) {
+                    alert("Delete failed: " + err.message);
+                }
+            }
+        };
+
+        // 8. Save / Reset Freebie
+        document.getElementById('freebie-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return alert("Unauthorized!");
+            const btn = document.getElementById('save-freebie-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+
+            try {
+                await setDoc(freebieDocRef, {
+                    title: document.getElementById('input-freebie-title').value,
+                    desc: document.getElementById('input-freebie-desc').value,
+                    img: document.getElementById('input-freebie-img').value,
+                    link: document.getElementById('input-freebie-link').value,
+                    updatedAt: serverTimestamp()
+                });
+                alert("Freebie section updated live!");
+            } catch (err) {
+                alert("Error saving: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-save"></i> Save & Update Freebie`;
+            }
+        });
+
+        window.resetFreebieToDefault = async () => {
+            if (!window.firebaseCurrentUser) return;
+            if (confirm("Reset Freebie section back to default placeholder?")) {
+                await setDoc(freebieDocRef, {
+                    title: "3D Whimsical Holiday Sticker Pack",
+                    desc: "Download this high-resolution printable pack completely free! Print at home or use digitally on your iPad.",
+                    img: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
+                    link: "https://drive.google.com/",
+                    updatedAt: serverTimestamp()
+                });
+                alert("Freebie section reset!");
+            }
+        };
+    </script>
+</body>
+</html>
