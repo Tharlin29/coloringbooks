@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraftStudio - Freebies & Digital Coloring Books</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-effect { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-rose-500 selection:text-white">
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="sticky top-0 z-40 glass-effect border-b border-slate-200/80">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchView('user')">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-orange-400 flex items-center justify-center text-white font-bold shadow-md shadow-rose-500/20">
+                    <i class="fas fa-sparkles"></i>
+                </div>
+                <span class="font-extrabold text-xl tracking-tight text-slate-900">Craft<span class="text-rose-500">Studio</span></span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="#freebie-section" onclick="switchView('user')" class="text-sm font-semibold text-slate-600 hover:text-rose-500 transition">Free Gifts</a>
+                <a href="#store-section" onclick="switchView('user')" class="text-sm font-semibold text-slate-600 hover:text-rose-500 transition">Premium Books</a>
+                
+                <!-- Admin Active Indicator -->
+                <button id="admin-nav-btn" onclick="switchView('admin')" class="hidden items-center gap-2 bg-slate-900 text-white text-xs font-semibold px-3.5 py-2 rounded-lg hover:bg-slate-800 transition shadow-sm">
+                    <i class="fas fa-sliders-h"></i> Admin Panel
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== 1. USER LANDING VIEW ==================== -->
+    <main id="user-view" class="block">
+        
+        <!-- HERO: FREE DOWNLOAD SECTION -->
+        <section id="freebie-section" class="pt-12 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12">
+                    
+                    <!-- Left: Freebie Preview Image -->
+                    <div class="lg:col-span-6 bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50 p-8 sm:p-12 flex items-center justify-center relative">
+                        <span class="absolute top-6 left-6 bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
+                            100% Free Download
+                        </span>
+                        <img id="display-freebie-img" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80" alt="Freebie Preview" class="w-full max-w-md rounded-2xl shadow-2xl object-cover aspect-[4/3] border-4 border-white transform hover:scale-[1.02] transition duration-300">
+                    </div>
+
+                    <!-- Right: Freebie Copy & Download Action -->
+                    <div class="lg:col-span-6 p-8 sm:p-12 flex flex-col justify-center">
+                        <div class="inline-flex items-center gap-2 text-rose-500 font-bold text-sm mb-3">
+                            <i class="fas fa-gift"></i> PINTEREST EXCLUSIVE GIFT
+                        </div>
+                        <h1 id="display-freebie-title" class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+                            3D Whimsical Holiday Sticker Pack
+                        </h1>
+                        <p id="display-freebie-desc" class="text-slate-600 text-base leading-relaxed mb-8">
+                            Download this high-resolution printable pack completely free! Print at home or use digitally on your iPad.
+                        </p>
+
+                        <div class="space-y-4">
+                            <a id="display-freebie-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base px-8 py-4 rounded-xl shadow-lg shadow-emerald-600/25 transition transform active:scale-95">
+                                <i class="fas fa-cloud-download-alt text-lg"></i>
+                                Download Free Pack Now
+                            </a>
+                            <p class="text-xs text-slate-400 flex items-center gap-1.5">
+                                <i class="fas fa-check-circle text-emerald-500"></i> Instant PDF/PNG access • No credit card required
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- STORE: ROCKETR PREMIUM BOOKS SECTION -->
+        <section id="store-section" class="py-16 bg-slate-100/70 border-t border-slate-200/60 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-rose-500 font-bold text-xs uppercase tracking-widest">Full Collections</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mt-2 mb-3">Want the Complete Edition?</h2>
+                    <p class="text-slate-600">Explore our full-length digital books and mega bundles. Instant delivery powered by Rocketr.</p>
+                </div>
+
+                <!-- Dynamic Product Grid -->
+                <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="col-span-full text-center py-12 text-slate-400">
+                        <p>Loading digital books...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== 2. ADMIN DASHBOARD VIEW ==================== -->
+    <section id="admin-view" class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- Admin Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 mb-8">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-2xl font-extrabold text-slate-900">Admin Control Center</h1>
+                    <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full">Firebase Connected</span>
+                </div>
+                <p id="admin-user-email" class="text-sm text-slate-500 mt-0.5">Logged in as Admin</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="switchView('user')" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition">
+                    <i class="fas fa-eye mr-1.5"></i> Preview Live Site
+                </button>
+                <button onclick="logoutAdmin()" class="px-4 py-2 text-sm font-semibold text-white bg-rose-600 rounded-lg hover:bg-rose-700 transition">
+                    <i class="fas fa-sign-out-alt mr-1.5"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="flex gap-2 border-b border-slate-200 mb-8 overflow-x-auto">
+            <button onclick="switchAdminTab('freebie')" id="tab-freebie" class="admin-tab px-5 py-3 text-sm font-bold border-b-2 border-rose-500 text-rose-600">
+                <i class="fas fa-gift mr-2"></i>Freebie Manager
+            </button>
+            <button onclick="switchAdminTab('products')" id="tab-products" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                <i class="fas fa-book mr-2"></i>Rocketr Books
+            </button>
+            <button onclick="switchAdminTab('security')" id="tab-security" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800">
+                <i class="fas fa-shield-alt mr-2"></i>Account & Security
+            </button>
+        </div>
+
+        <!-- TAB 1: FREEBIE MANAGER -->
+        <div id="panel-freebie" class="admin-panel bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm max-w-3xl">
+            <h3 class="text-lg font-bold text-slate-900 mb-6">Edit Main Free Download Offer</h3>
+            <form id="freebie-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Freebie Title</label>
+                    <input type="text" id="input-freebie-title" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Description Text</label>
+                    <textarea id="input-freebie-desc" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none"></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Cover Image (URL or Upload)</label>
+                        <input type="text" id="input-freebie-img" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none mb-2" placeholder="https://...">
+                        <input type="file" id="freebie-file-upload" accept="image/*" class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-600 hover:file:bg-rose-100">
+                        <p id="freebie-upload-status" class="text-xs text-emerald-600 mt-1 hidden"></p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Direct Download File URL (Drive / Dropbox)</label>
+                        <input type="url" id="input-freebie-link" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none" placeholder="https://drive.google.com/...">
+                    </div>
+                </div>
+                <button type="submit" id="save-freebie-btn" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl transition flex items-center gap-2">
+                    <i class="fas fa-cloud-upload-alt"></i> Save & Publish Freebie
+                </button>
+            </form>
+        </div>
+
+        <!-- TAB 2: ROCKETR PRODUCTS MANAGER -->
+        <div id="panel-products" class="admin-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Add New Product Form -->
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
+                <h3 class="text-lg font-bold text-slate-900 mb-5">Add New Rocketr Book</h3>
+                <form id="add-product-form" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Book Title</label>
+                        <input type="text" id="prod-title" required placeholder="e.g., 100-Page Christmas Coloring Book" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Price Tag</label>
+                        <input type="text" id="prod-price" required placeholder="e.g., $9.99" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Short Description</label>
+                        <textarea id="prod-desc" rows="2" required placeholder="What is included in this book?" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Book Cover Image (URL or Upload)</label>
+                        <input type="text" id="prod-img" required placeholder="https://..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm mb-1.5">
+                        <input type="file" id="prod-file-upload" accept="image/*" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700">
+                        <p id="prod-upload-status" class="text-xs text-emerald-600 mt-1 hidden"></p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Rocketr Product Link</label>
+                        <input type="url" id="prod-link" required placeholder="https://rocketr.net/buy/..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                    </div>
+                    <button type="submit" id="publish-prod-btn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition text-sm">
+                        <i class="fas fa-plus mr-1.5"></i> Publish Book to Store
+                    </button>
+                </form>
+            </div>
+
+            <!-- Existing Products List -->
+            <div class="lg:col-span-7 space-y-4">
+                <h3 class="text-lg font-bold text-slate-900">Published Rocketr Books (Live Database)</h3>
+                <div id="admin-products-list" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: ADMIN SETTINGS & SECURITY -->
+        <div id="panel-security" class="admin-panel hidden max-w-3xl space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Update Firebase Admin Password</h3>
+                <p class="text-sm text-slate-500 mb-6">Change the password for your Firebase Admin account securely.</p>
+                
+                <form id="change-password-form" class="space-y-4 max-w-md">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">New Password (Min 6 characters)</label>
+                        <input type="password" id="new-pass" required minlength="6" class="w-full px-4 py-2 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-rose-500">
+                    </div>
+                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                        Update Password
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-white border-t border-slate-200 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>© 2026 CraftStudio. All digital downloads are for personal use.</p>
+            <button onclick="openLoginModal()" class="text-slate-400 hover:text-slate-700 transition text-xs flex items-center gap-1.5 p-2" title="Admin Login">
+                <i class="fas fa-lock"></i> Admin
+            </button>
+        </div>
+    </footer>
+
+    <!-- ==================== ADMIN LOGIN MODAL ==================== -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-extrabold text-lg text-slate-900">Admin Firebase Login</h3>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <!-- Protocol Warning Banner (Shows if opened via content:// or file://) -->
+            <div id="protocol-warning" class="hidden bg-amber-50 border border-amber-300 text-amber-900 text-xs p-3 rounded-xl mb-3 leading-relaxed">
+                <strong>⚠️ Local File Detected:</strong> You opened this file directly from phone storage (<code>content://</code>). Please upload this file to <strong>Vercel</strong> and open via <code>https://...vercel.app</code> for Firebase Login to work.
+            </div>
+
+            <p class="text-xs text-slate-500 mb-4">Sign in with your authorized Firebase Admin email and password.</p>
+            <form id="admin-login-form" class="space-y-3.5">
+                <div>
+                    <input type="email" id="login-email-input" required placeholder="Admin Email" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                </div>
+                <div>
+                    <input type="password" id="login-password-input" required placeholder="Password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                </div>
+                <p id="login-error" class="text-xs text-rose-600 hidden font-semibold bg-rose-50 p-2.5 rounded-lg border border-rose-200"></p>
+                <button type="submit" id="login-submit-btn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-sm">
+                    Sign In to Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== UI HELPER SCRIPT (Non-module so buttons always work) ==================== -->
+    <script>
+        window.switchView = function(view) {
+            if (view === 'admin' && !window.firebaseCurrentUser) {
+                window.openLoginModal();
+                return;
+            }
+            document.getElementById('user-view').style.display = view === 'user' ? 'block' : 'none';
+            document.getElementById('admin-view').style.display = view === 'admin' ? 'block' : 'none';
+            window.scrollTo(0, 0);
+        };
+
+        window.switchAdminTab = function(tabName) {
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`panel-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.admin-tab').forEach(t => {
+                t.classList.remove('border-rose-500', 'text-rose-600', 'font-bold');
+                t.classList.add('border-transparent', 'text-slate-500', 'font-semibold');
+            });
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.add('border-rose-500', 'text-rose-600', 'font-bold');
+            activeTab.classList.remove('border-transparent', 'text-slate-500', 'font-semibold');
+        };
+
+        window.openLoginModal = function() {
+            if (window.firebaseCurrentUser) {
+                window.switchView('admin');
+                return;
+            }
+            // Check if running on content:// or file://
+            if (window.location.protocol === 'content:' || window.location.protocol === 'file:') {
+                document.getElementById('protocol-warning').classList.remove('hidden');
+            }
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-email-input').focus();
+        };
+
+        window.closeLoginModal = function() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+        };
+    </script>
+
+    <!-- ==================== FIREBASE SDK & LOGIC ==================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, addDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBS6G-mexA_toDRo9RAAFDm1_ExtZj_PMc",
+            authDomain: "coloring-book-b154e.firebaseapp.com",
+            projectId: "coloring-book-b154e",
+            storageBucket: "coloring-book-b154e.firebasestorage.app",
+            messagingSenderId: "949610623419",
+            appId: "1:949610623419:web:10deda5e9c8fda63c9949e",
+            measurementId: "G-DGKY8PKZK0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        window.firebaseCurrentUser = null;
+
+        // 1. Auth State Listener
+        onAuthStateChanged(auth, (user) => {
+            window.firebaseCurrentUser = user;
+            const navBtn = document.getElementById('admin-nav-btn');
+            if (user) {
+                navBtn.classList.remove('hidden');
+                navBtn.classList.add('inline-flex');
+                document.getElementById('admin-user-email').innerText = `Logged in as: ${user.email}`;
+            } else {
+                navBtn.classList.add('hidden');
+                navBtn.classList.remove('inline-flex');
+                window.switchView('user');
+            }
+        });
+
+        // 2. Login Form Submit with 12-second Timeout Protection
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email-input').value.trim();
+            const pass = document.getElementById('login-password-input').value;
+            const errorEl = document.getElementById('login-error');
+            const btn = document.getElementById('login-submit-btn');
+
+            if (window.location.protocol === 'content:' || window.location.protocol === 'file:') {
+                errorEl.innerText = "Cannot login from local file (content://). Deploy to Vercel first!";
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            btn.innerText = "Verifying...";
+            btn.disabled = true;
+            errorEl.classList.add('hidden');
+
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error("Connection timed out. Check your internet/VPN or Firebase Authorized Domains.")), 12000)
+            );
+
+            try {
+                await Promise.race([
+                    signInWithEmailAndPassword(auth, email, pass),
+                    timeoutPromise
+                ]);
+                window.closeLoginModal();
+                window.switchView('admin');
+            } catch (err) {
+                errorEl.innerText = err.message;
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.innerText = "Sign In to Dashboard";
+                btn.disabled = false;
+            }
+        });
+
+        window.logoutAdmin = async () => {
+            await signOut(auth);
+            window.switchView('user');
+        };
+
+        document.getElementById('change-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return;
+            const newPass = document.getElementById('new-pass').value;
+            try {
+                await updatePassword(window.firebaseCurrentUser, newPass);
+                alert("Password updated successfully!");
+                e.target.reset();
+            } catch (err) {
+                alert("Error: " + err.message + " (Try logging out and back in before changing password.)");
+            }
+        });
+
+        // 3. Real-time Firestore Sync
+        const freebieDocRef = doc(db, "settings", "freebie");
+        onSnapshot(freebieDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('
