@@ -1,0 +1,2896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="p:domain_verify" content="da3943ab78cca2936e4b77a7786277b0"/>
+    <title>GBTK STUDIO - Freebies & Digital Coloring Books</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-effect { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); }
+        
+        /* Book Cover Aspect & Shadow */
+        .wattpad-cover {
+            aspect-ratio: 2 / 3;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.16), 0 4px 10px -3px rgba(15, 23, 42, 0.08);
+        }
+        .wattpad-card:hover .wattpad-cover-img {
+            transform: scale(1.04);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Smooth Highlight Animation when jumping to a linked Paid Book */
+        @keyframes highlightBookPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 80, 10, 0.65); transform: translateY(-4px); }
+            50% { box-shadow: 0 0 0 12px rgba(255, 80, 10, 0); transform: translateY(-4px); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 80, 10, 0); transform: translateY(0); }
+        }
+        .book-target-highlight {
+            animation: highlightBookPulse 1.8s ease-out 2;
+            border-radius: 1rem;
+            outline: 3px solid #FF500A;
+            outline-offset: 6px;
+        }
+
+        /* ==================== 3D CLAY & VINYL TOY LOADING SPLASH STYLES ==================== */
+        .clay-3d-font {
+            font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+        }
+        .clay-letter {
+            display: inline-block;
+            font-weight: 700;
+            line-height: 1.02;
+            letter-spacing: 0.02em;
+            background: var(--clay-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter:
+                drop-shadow(0px 3px 0px var(--clay-edge))
+                drop-shadow(0px 6px 0px rgba(15, 23, 42, 0.12))
+                drop-shadow(0px 12px 18px rgba(15, 23, 42, 0.16));
+            animation: clayBounce 1.8s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.08s);
+            user-select: none;
+        }
+        .clay-sticker-sub {
+            font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+            display: inline-block;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            background: var(--sub-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.95);
+            filter: drop-shadow(0px 3px 6px rgba(15, 23, 42, 0.14));
+        }
+
+        /* 3D English NEW RELEASE / NEW BOOK Overlay Text on Slideshow */
+        .clay-3d-new-badge {
+            font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #FFFBEB;
+            text-shadow:
+                0 2px 0 #C2410C,
+                0 4px 0 #9A3412,
+                0 6px 0 #7C2D12,
+                0 10px 20px rgba(0, 0, 0, 0.55);
+            animation: newBookFloat 2s ease-in-out infinite;
+        }
+        @keyframes newBookFloat {
+            0%, 100% { transform: translateY(0) rotate(-1.5deg) scale(1); }
+            50% { transform: translateY(-5px) rotate(1.5deg) scale(1.04); }
+        }
+        @keyframes clayBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            45% { transform: translateY(-7px) scale(1.04); }
+        }
+        @keyframes loadingBarSlide {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(35%); }
+            100% { transform: translateX(130%); }
+        }
+        .loading-bar-runner {
+            animation: loadingBarSlide 1.35s ease-in-out infinite;
+        }
+        @keyframes slideFadeIn {
+            from { opacity: 0.35; transform: scale(1.02); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .slide-enter-anim {
+            animation: slideFadeIn 0.55s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-[#F8F9FA] text-slate-800 antialiased selection:bg-[#FF500A] selection:text-white">
+
+    <!-- ==================== 3D CLAY STYLE SPLASH / LOADING OVERLAY ==================== -->
+    <div id="gbtk-loading-splash" class="fixed inset-0 z-[100] flex flex-col items-center justify-center px-5 text-center transition-opacity duration-500 bg-gradient-to-br from-[#FFF3E6] via-[#FFF9F2] to-[#EBF9F5]">
+        <div class="absolute top-10 left-8 w-16 h-16 rounded-full bg-rose-200/45 blur-xl pointer-events-none"></div>
+        <div class="absolute bottom-14 right-10 w-24 h-24 rounded-full bg-emerald-200/45 blur-xl pointer-events-none"></div>
+        <div class="absolute top-1/3 right-12 w-14 h-14 rounded-full bg-amber-200/50 blur-lg pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-lg mx-auto">
+            <!-- 3D Clay Letters: GBTK -->
+            <div class="text-5xl sm:text-7xl tracking-wide mb-1">
+                <span class="clay-3d-font clay-letter" style="--i:0; --clay-bg: linear-gradient(180deg, #FF8E72 0%, #F25C43 100%); --clay-edge: #C93B24;">G</span><span class="clay-3d-font clay-letter" style="--i:1; --clay-bg: linear-gradient(180deg, #4FD1B5 0%, #249E84 100%); --clay-edge: #16735F;">B</span><span class="clay-3d-font clay-letter" style="--i:2; --clay-bg: linear-gradient(180deg, #FFE07D 0%, #F5B83D 100%); --clay-edge: #C48A19;">T</span><span class="clay-3d-font clay-letter" style="--i:3; --clay-bg: linear-gradient(180deg, #D2B4F8 0%, #9F7AEA 100%); --clay-edge: #7552C2;">K</span>
+            </div>
+
+            <!-- 3D Clay Letters: STUDIO -->
+            <div class="text-5xl sm:text-7xl tracking-wide mb-4">
+                <span class="clay-3d-font clay-letter" style="--i:4; --clay-bg: linear-gradient(180deg, #FF8E72 0%, #F25C43 100%); --clay-edge: #C93B24;">S</span><span class="clay-3d-font clay-letter" style="--i:5; --clay-bg: linear-gradient(180deg, #8CE0D0 0%, #4FB8A5 100%); --clay-edge: #2E8A7A;">T</span><span class="clay-3d-font clay-letter" style="--i:6; --clay-bg: linear-gradient(180deg, #FFE07D 0%, #F5B83D 100%); --clay-edge: #C48A19;">U</span><span class="clay-3d-font clay-letter" style="--i:7; --clay-bg: linear-gradient(180deg, #D2B4F8 0%, #9F7AEA 100%); --clay-edge: #7552C2;">D</span><span class="clay-3d-font clay-letter" style="--i:8; --clay-bg: linear-gradient(180deg, #FF8E72 0%, #F25C43 100%); --clay-edge: #C93B24;">I</span><span class="clay-3d-font clay-letter" style="--i:9; --clay-bg: linear-gradient(180deg, #9AD69E 0%, #5CA663 100%); --clay-edge: #3B7A41;">O</span>
+            </div>
+
+            <!-- 3D Sticker Subtitle: FREE PRINTABLES & COLORING BOOKS -->
+            <div class="bg-white/85 backdrop-blur-sm border-2 border-white rounded-2xl px-4 py-2.5 shadow-md inline-block mb-6">
+                <p class="clay-sticker-sub text-sm sm:text-lg uppercase leading-tight" style="--sub-bg: linear-gradient(90deg, #E86A58 0%, #49A09D 50%, #9B72CF 100%);">
+                    FREE PRINTABLES &amp; COLORING BOOKS
+                </p>
+            </div>
+
+            <!-- Smooth Progress Pill -->
+            <div class="w-48 h-2 bg-slate-200/80 rounded-full overflow-hidden mx-auto shadow-inner">
+                <div class="w-24 h-full rounded-full bg-gradient-to-r from-[#FF500A] via-amber-400 to-emerald-500 loading-bar-runner"></div>
+            </div>
+            <p class="text-[11px] font-bold text-slate-500 mt-2.5 tracking-wide">Loading Freebies &amp; Editions...</p>
+        </div>
+    </div>
+
+    <!-- ==================== ADMIN TOP STATUS BAR ==================== -->
+    <div id="admin-top-banner" class="hidden bg-slate-900 text-white px-4 py-2.5 text-xs sm:text-sm border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+                <span class="inline-flex items-center gap-1.5 bg-emerald-500 text-slate-950 font-extrabold px-2.5 py-0.5 rounded-full text-xs">
+                    <span class="w-2 h-2 rounded-full bg-slate-950 animate-pulse"></span> ADMIN MODE
+                </span>
+                <span id="banner-admin-email" class="text-slate-300 hidden sm:inline">Logged in as Admin</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="toggle-mode-btn" onclick="toggleAdminUserView()" class="bg-[#FF500A] hover:bg-[#e04304] text-white font-bold px-3 py-1 rounded-lg text-xs transition flex items-center gap-1.5">
+                    <i class="fas fa-sliders-h"></i> <span>Go to Admin Panel</span>
+                </button>
+                <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-3 py-1 rounded-lg text-xs transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="sticky top-0 z-40 glass-effect border-b border-slate-200/80" id="main-navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchView('user')">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#FF500A] to-amber-500 flex items-center justify-center text-white font-bold shadow-md shadow-orange-500/25">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight text-slate-900">GBTK <span class="text-[#FF500A]">STUDIO</span></span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-5 text-sm font-bold text-slate-600">
+                    <a href="#free-gifts-section" onclick="switchView('user')" class="hover:text-[#FF500A] transition">Free Gifts</a>
+                    <a href="#freebie-section" onclick="switchView('user')" class="hover:text-[#FF500A] transition">Showcase &amp; Spotlight</a>
+                    <a href="#store-section" onclick="switchView('user')" class="hover:text-[#FF500A] transition">Premium Books</a>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="#free-gifts-section" onclick="switchView('user')" class="md:hidden text-xs font-bold text-slate-600 hover:text-[#FF500A]">Free Gifts</a>
+                <a href="#freebie-section" onclick="switchView('user')" class="md:hidden text-xs font-bold text-slate-600 hover:text-[#FF500A]">Showcase</a>
+                <a href="#store-section" onclick="switchView('user')" class="md:hidden text-xs font-bold text-slate-600 hover:text-[#FF500A]">Books</a>
+                
+                <!-- Role Badge -->
+                <span id="role-indicator-badge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500">
+                    Visitor
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== 1. USER LANDING VIEW ==================== -->
+    <main id="user-view" class="block">
+        
+        <!-- TOP SECTION: FREE PRINTABLE GIFTS LIBRARY -->
+        <section id="free-gifts-section" class="relative bg-gradient-to-b from-emerald-50/70 via-[#F8F9FA] to-[#F8F9FA] pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 font-extrabold text-xs px-3 py-1 rounded-full mb-2.5">
+                            <i class="fas fa-gift"></i> FREE PRINTABLE LIBRARY
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-1.5 h-7 rounded-full bg-emerald-500"></span>
+                            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Free Printable Gifts</h1>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Tap any cover to preview details, download the free sample PDF, or jump directly to the full paid edition.</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-start sm:self-end">
+                        <button onclick="quickAdminAdd('freegifts')" class="admin-only-control hidden bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-full transition items-center gap-1.5 shadow-sm">
+                            <i class="fas fa-plus"></i> Add Gift
+                        </button>
+                        <span id="visitor-gift-count" class="text-xs font-extrabold text-emerald-700 bg-emerald-100 px-3 py-1.5 rounded-full">0 Freebies</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic Category Filter Bar for Free Gifts -->
+                <div id="gift-category-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-2">
+                    <!-- Category pills injected dynamically -->
+                </div>
+
+                <!-- Free Gifts Grid -->
+                <div id="free-gifts-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-6">
+                    <div class="col-span-full text-center py-10 text-slate-400 text-sm">
+                        <i class="fas fa-spinner fa-spin mr-1.5"></i> Loading free gifts...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECOND SECTION: COMPACT HERO FREEBIE CARD (LEFT) + AUTO BOOK SHOWCASE SLIDESHOW (RIGHT) -->
+        <section id="freebie-section" class="relative overflow-hidden bg-white border-b border-slate-200/80 py-10 px-4 sm:px-6 lg:px-8">
+            <div class="absolute inset-0 bg-gradient-to-r from-orange-50/75 via-rose-50/35 to-amber-50/55 pointer-events-none"></div>
+
+            <div class="relative max-w-6xl mx-auto">
+                <!-- Admin Quick Edit Button on Preview Page -->
+                <div class="admin-only-control hidden justify-end mb-4">
+                    <button onclick="quickAdminEditFeatured()" class="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-[#FF500A] text-white text-xs font-bold px-4 py-2 rounded-full shadow-md transition">
+                        <i class="fas fa-pen"></i> Edit Featured Hero Post
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+                    
+                    <!-- LEFT (4 cols): COMPACT FEATURED HERO FREEBIE (IMAGE + TITLE ONLY -> CLICK FOR FULL DETAILS) -->
+                    <div class="md:col-span-4 flex flex-col">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#FF500A]">
+                                <i class="fas fa-star"></i> Featured Freebie
+                            </span>
+                            <span class="text-[11px] font-bold text-slate-400">Tap cover for details</span>
+                        </div>
+
+                        <div onclick="openItemDetail('featured', 'hero')" class="wattpad-card group cursor-pointer bg-white rounded-2xl p-3.5 border border-slate-200/90 shadow-md hover:shadow-xl hover:border-orange-300 transition flex-1 flex flex-col">
+                            <div class="relative rounded-xl overflow-hidden wattpad-cover bg-slate-100 mb-3">
+                                <img id="display-freebie-img" src="https://raw.githubusercontent.com/Tharlin29/image/refs/heads/main/1795542505894.jpg" alt="Featured Freebie Preview" class="wattpad-cover-img w-full h-full object-cover transition duration-500">
+                                <span class="absolute top-2.5 left-2.5 bg-[#FF500A] text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md shadow">
+                                    #1 Featured Freebie
+                                </span>
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end justify-center p-3">
+                                    <span class="bg-white/95 text-slate-900 text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow flex items-center gap-1.5">
+                                        <i class="fas fa-eye text-[#FF500A]"></i> View Details &amp; Download
+                                    </span>
+                                </div>
+                            </div>
+
+                            <h2 id="display-freebie-title" class="font-extrabold text-base sm:text-lg text-slate-900 group-hover:text-[#FF500A] transition line-clamp-2 leading-snug text-center px-1 mt-auto">
+                                GBTK STUDIO Free Printable Pack
+                            </h2>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT (8 cols): AUTO BOOK SHOWCASE SLIDESHOW (STARTS WITH GBTK STUDIO BANNER -> ALL BOOKS + 30S 3D NEW BOOK SPOTLIGHT) -->
+                    <div class="md:col-span-8 flex flex-col">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span id="slideshow-header-badge" class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-slate-700">
+                                <i class="fas fa-images text-[#FF500A]"></i> GBTK STUDIO Book Showcase
+                            </span>
+                            <div class="flex items-center gap-2">
+                                <span id="slideshow-counter-pill" class="text-[11px] font-extrabold bg-slate-900 text-white px-2.5 py-0.5 rounded-full">
+                                    1 / 1
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Slideshow Container -->
+                        <div id="book-showcase-carousel" class="relative flex-1 min-h-[340px] sm:min-h-[400px] rounded-3xl overflow-hidden bg-slate-900 border-2 border-white shadow-xl group select-none">
+                            
+                            <!-- Slide Visual Area -->
+                            <div id="slideshow-content-area" onclick="handleSlideshowClick()" class="relative w-full h-full min-h-[340px] sm:min-h-[400px] cursor-pointer overflow-hidden flex items-center justify-center">
+                                <!-- Blurred Ambient Backdrop for Vertical Book Covers -->
+                                <img id="slideshow-bg-blur" src="https://raw.githubusercontent.com/Tharlin29/image/refs/heads/main/1795542505894.jpg" alt="" class="absolute inset-0 w-full h-full object-cover scale-110 blur-xl opacity-45 transition-all duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-slate-950/20"></div>
+
+                                <!-- Main Slide Image (Banner or Book Cover) -->
+                                <div id="slideshow-foreground-wrapper" class="relative z-10 w-full h-full flex items-center justify-center p-4 sm:p-6">
+                                    <img id="slideshow-main-img" src="https://raw.githubusercontent.com/Tharlin29/image/refs/heads/main/1795542505894.jpg" alt="GBTK STUDIO Showcase" class="w-full h-full max-h-[340px] object-contain rounded-2xl shadow-2xl transition duration-500 group-hover:scale-[1.02]">
+                                </div>
+
+                                <!-- 3D ENGLISH "NEW BOOK RELEASE" OVERLAY (SHOWN FOR 30 SECONDS AFTER EACH AUTO ROTATION WHEN A NEW BOOK IS ADDED) -->
+                                <div id="slideshow-new-book-3d-overlay" class="hidden absolute top-4 left-4 right-4 z-20 flex flex-col items-center sm:items-start pointer-events-none">
+                                    <div class="inline-flex items-center gap-2 bg-gradient-to-r from-[#FF500A] via-amber-500 to-rose-600 text-white px-4 py-1.5 rounded-full shadow-lg border-2 border-white/90 mb-1.5">
+                                        <i class="fas fa-sparkles animate-spin"></i>
+                                        <span id="slideshow-new-timer-badge" class="text-[11px] font-extrabold uppercase tracking-wider">NEW RELEASE • 30s SPOTLIGHT</span>
+                                    </div>
+                                    <div class="clay-3d-new-badge text-2xl sm:text-4xl uppercase tracking-wider px-2">
+                                        NEW COLORING BOOK!
+                                    </div>
+                                </div>
+
+                                <!-- Bottom Caption & Action Overlay -->
+                                <div class="absolute bottom-0 inset-x-0 z-20 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                                    <div class="min-w-0 text-left">
+                                        <span id="slideshow-slide-tag" class="inline-block bg-[#FF500A] text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded mb-1.5 shadow">
+                                            OFFICIAL STUDIO COLLECTION
+                                        </span>
+                                        <h3 id="slideshow-slide-title" class="text-lg sm:text-2xl font-extrabold text-white leading-tight truncate">
+                                            GBTK STUDIO — Free Printables &amp; Coloring Books
+                                        </h3>
+                                        <p id="slideshow-slide-subtitle" class="text-xs sm:text-sm text-slate-200/90 line-clamp-1 mt-0.5">
+                                            Explore whimsical 3D coloring books, printable activity guides &amp; sticker packs.
+                                        </p>
+                                    </div>
+                                    <button type="button" class="shrink-0 self-start sm:self-end inline-flex items-center gap-1.5 bg-white hover:bg-[#FF500A] text-slate-900 hover:text-white font-extrabold text-xs px-4 py-2.5 rounded-full shadow-lg transition">
+                                        <span id="slideshow-cta-text">Browse Books</span>
+                                        <i class="fas fa-arrow-right text-[11px]"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Left / Right Manual Navigation Arrows -->
+                            <button type="button" onclick="event.stopPropagation(); prevShowcaseSlide();" class="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/50 hover:bg-[#FF500A] text-white flex items-center justify-center backdrop-blur-sm transition opacity-80 group-hover:opacity-100" title="Previous Slide">
+                                <i class="fas fa-chevron-left text-xs"></i>
+                            </button>
+                            <button type="button" onclick="event.stopPropagation(); nextShowcaseSlide(true);" class="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/50 hover:bg-[#FF500A] text-white flex items-center justify-center backdrop-blur-sm transition opacity-80 group-hover:opacity-100" title="Next Slide">
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </button>
+
+                            <!-- Slide Indicator Dots -->
+                            <div id="slideshow-dots" class="absolute top-3.5 right-3.5 z-30 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
+                                <!-- Dots injected dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- THIRD SECTION: PREMIUM ROCKETR & CRYPTO BOOKS WITH CATEGORY FILTER -->
+        <section id="store-section" class="py-12 bg-[#F8F9FA] px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-6 rounded-full bg-[#FF500A]"></span>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Complete Editions &amp; Coloring Books</h2>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Full-length digital books &amp; bundles. Pay via Card/PayPal (Rocketr) or Crypto (USDT).</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-start sm:self-end">
+                        <button onclick="quickAdminAdd('products')" class="admin-only-control hidden bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-full transition items-center gap-1.5 shadow-sm">
+                            <i class="fas fa-plus"></i> Add Book
+                        </button>
+                        <span id="visitor-book-count" class="text-xs font-extrabold text-[#FF500A] bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-full">0 Books</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic Category Filter Bar for Premium Books -->
+                <div id="book-category-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-5 mb-2">
+                    <!-- Category pills injected dynamically -->
+                </div>
+
+                <!-- Dynamic Product Grid -->
+                <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 sm:gap-6">
+                    <div class="col-span-full text-center py-12 text-slate-400 text-sm">
+                        <i class="fas fa-spinner fa-spin mr-1.5"></i> Loading digital books...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== ITEM DETAIL MODAL (FOR FEATURED HERO, FREE GIFTS & PAID BOOKS) ==================== -->
+    <div id="item-detail-modal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-100 max-h-[90vh] flex flex-col">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/70">
+                <div class="flex items-center gap-2">
+                    <span id="detail-modal-badge" class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md bg-orange-100 text-[#FF500A]">
+                        Details
+                    </span>
+                    <span id="detail-modal-category" class="text-[11px] font-bold px-2.5 py-1 rounded-md bg-slate-200/70 text-slate-700">
+                        General
+                    </span>
+                </div>
+                <button onclick="closeDetailModal()" class="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Scrollable Content -->
+            <div class="p-6 overflow-y-auto space-y-6">
+                <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+                    <!-- Cover -->
+                    <div class="w-44 sm:w-48 shrink-0 rounded-xl overflow-hidden wattpad-cover bg-slate-100 border border-slate-200">
+                        <img id="detail-modal-img" src="" alt="Cover" class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- Info -->
+                    <div class="flex-1 text-center sm:text-left">
+                        <h3 id="detail-modal-title" class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug mb-2">Title</h3>
+                        
+                        <div id="detail-modal-stats" class="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs font-bold text-slate-500 mb-4">
+                            <!-- Injected dynamically -->
+                        </div>
+
+                        <p id="detail-modal-desc" class="text-sm text-slate-600 leading-relaxed mb-5">Description</p>
+
+                        <div id="detail-modal-actions" class="space-y-2.5">
+                            <!-- Action buttons + Upsell box injected dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 2. ADMIN DASHBOARD VIEW ==================== -->
+    <section id="admin-view" class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Admin Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 mb-6">
+            <div>
+                <div class="flex items-center gap-2.5">
+                    <span class="bg-slate-900 text-white text-xs font-extrabold px-2.5 py-1 rounded-md">GBTK STUDIO ADMIN</span>
+                    <h1 class="text-2xl font-extrabold text-slate-900">Dashboard &amp; Content Manager</h1>
+                </div>
+                <p id="admin-user-email" class="text-sm text-slate-500 mt-1">Manage Books, Free PDF Gifts, Paid Upsell Links, Featured Hero, Categories &amp; Feedback.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="switchView('user')" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition">
+                    <i class="fas fa-eye mr-1.5"></i> Preview Live Site
+                </button>
+            </div>
+        </div>
+
+        <!-- REAL VISITOR ANALYTICS CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold uppercase text-slate-400">Real Unique Visitors</p>
+                    <h3 id="stat-unique-visitors" class="text-2xl font-extrabold text-slate-900">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold uppercase text-slate-400">Total Page Views</p>
+                    <h3 id="stat-total-views" class="text-2xl font-extrabold text-slate-900">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-bold uppercase text-slate-400">Total Hearts Across Posts</p>
+                    <h3 id="stat-total-hearts" class="text-2xl font-extrabold text-slate-900">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="flex gap-2 border-b border-slate-200 mb-8 overflow-x-auto">
+            <button onclick="switchAdminTab('freegifts')" id="tab-freegifts" class="admin-tab px-5 py-3 text-sm font-bold border-b-2 border-[#FF500A] text-[#FF500A] whitespace-nowrap">
+                <i class="fas fa-file-pdf mr-2"></i>Free Gifts &amp; Paid Link
+            </button>
+            <button onclick="switchAdminTab('freebie')" id="tab-freebie" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap">
+                <i class="fas fa-star mr-2"></i>Featured Hero Freebie
+            </button>
+            <button onclick="switchAdminTab('products')" id="tab-products" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap">
+                <i class="fas fa-book mr-2"></i>Premium Books Manager
+            </button>
+            <button onclick="switchAdminTab('engagement')" id="tab-engagement" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap">
+                <i class="fas fa-heart mr-2"></i>Hearts &amp; Feedback
+            </button>
+            <button onclick="switchAdminTab('security')" id="tab-security" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap">
+                <i class="fas fa-shield-alt mr-2"></i>Admin Password
+            </button>
+        </div>
+
+        <!-- Shared Datalist for Quick Category Suggestions -->
+        <datalist id="category-suggestions">
+            <option value="Christmas & Holiday">
+            <option value="3D Clay Stickers">
+            <option value="Cute Animals">
+            <option value="Cozy & Aesthetic">
+            <option value="Mandala & Patterns">
+            <option value="Kids Coloring">
+            <option value="Printable Planners">
+        </datalist>
+
+        <!-- TAB 1: DEDICATED FREE GIFTS MANAGER -->
+        <div id="panel-freegifts" class="admin-panel grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
+                <div class="flex items-center justify-between mb-5">
+                    <h3 id="gift-form-heading" class="text-lg font-bold text-slate-900">Add New Free PDF Gift</h3>
+                    <button type="button" id="cancel-gift-edit-btn" onclick="resetGiftForm()" class="hidden text-xs font-bold text-slate-500 hover:text-emerald-600 underline">
+                        Cancel Edit
+                    </button>
+                </div>
+
+                <form id="free-gift-form" class="space-y-4">
+                    <input type="hidden" id="edit-gift-id" value="">
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Free Gift Title</label>
+                        <input type="text" id="gift-title" required placeholder="e.g., Community Helpers Free Sample (3 Pages)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">
+                            <i class="fas fa-folder-open text-emerald-600 mr-1"></i> Category (For Grouping)
+                        </label>
+                        <input type="text" id="gift-category" list="category-suggestions" placeholder="e.g., 3D Clay Stickers, Christmas, Kids Coloring" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Description</label>
+                        <textarea id="gift-desc" rows="2" required placeholder="Short description of this free PDF sample..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none text-sm"></textarea>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5">
+                        <label class="block text-xs font-bold uppercase text-slate-600">
+                            <i class="fas fa-image text-emerald-600 mr-1"></i> Preview Cover Image URL
+                        </label>
+                        <input type="url" id="gift-img" required placeholder="https://raw.githubusercontent.com/..." class="w-full px-3 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 outline-none text-xs">
+                        <div id="gift-img-preview-box" class="hidden pt-1">
+                            <img id="gift-img-preview" src="" class="w-full h-36 object-contain bg-white rounded-lg border border-slate-200 p-1" onerror="this.parentElement.classList.add('hidden')">
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl border-2 border-emerald-200 bg-emerald-50/50 space-y-2.5">
+                        <label class="block text-xs font-bold uppercase text-emerald-800">
+                            <i class="fas fa-file-pdf text-rose-600 mr-1"></i> Direct Free Sample PDF URL
+                        </label>
+                        <input type="url" id="gift-pdf-data" required placeholder="https://raw.githubusercontent.com/.../free-sample.pdf" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 outline-none text-xs">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Download File Name (Optional)</label>
+                            <input type="text" id="gift-pdf-filename" placeholder="e.g., Community-Helpers-Free-Sample.pdf" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 outline-none text-xs">
+                        </div>
+                    </div>
+
+                    <!-- EXACT PAID BOOK CONNECTION -->
+                    <div class="p-4 rounded-xl border-2 border-orange-200 bg-orange-50/70 space-y-3">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fas fa-crown text-[#FF500A]"></i>
+                            <label class="block text-xs font-extrabold uppercase text-[#FF500A]">
+                                Connect to Full Paid Book / Sticker Pack
+                            </label>
+                        </div>
+                        <p class="text-[11px] text-slate-600 leading-relaxed">
+                            Select the matching full paid book below so visitors who love this free sample can click directly to buy it!
+                        </p>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">1. Choose Matching Paid Book (Recommended)</label>
+                            <select id="gift-linked-book-id" class="w-full px-3 py-2.5 rounded-lg border border-orange-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs font-semibold text-slate-800">
+                                <option value="">-- No Specific Book (Link to All Books) --</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">2. OR Custom Direct Checkout URL (Optional)</label>
+                            <input type="url" id="gift-custom-buy-url" placeholder="https://rocketr.net/buy/... (if book is not in store list above)" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs">
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">3. Upsell Callout Message</label>
+                            <input type="text" id="gift-upsell-label" value="Want the full 20+ page book or full sticker pack? See the complete set here" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="publish-gift-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition text-sm shadow-md shadow-emerald-600/20">
+                        <i class="fas fa-cloud-upload-alt mr-1.5"></i> Publish Free PDF Gift
+                    </button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-7 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">Published Free PDF Gifts</h3>
+                    <span id="gift-count-badge" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">0 Gifts</span>
+                </div>
+                <div id="admin-gifts-list" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: FEATURED HERO FREEBIE MANAGER -->
+        <div id="panel-freebie" class="admin-panel hidden bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm max-w-3xl">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Edit Featured Hero Freebie</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Visitors see the cover &amp; title on the main page and tap to open the full details modal.</p>
+                </div>
+                <button type="button" onclick="resetFreebieToDefault()" class="text-xs font-semibold text-rose-600 hover:underline">
+                    <i class="fas fa-trash-alt mr-1"></i> Reset / Clear
+                </button>
+            </div>
+            <form id="freebie-form" class="space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Featured Gift Title</label>
+                        <input type="text" id="input-freebie-title" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Category Badge (Optional)</label>
+                        <input type="text" id="input-freebie-category" list="category-suggestions" placeholder="e.g., 3D Clay Stickers" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Description Text (Shown when user taps card)</label>
+                    <textarea id="input-freebie-desc" rows="3" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm"></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5">
+                        <label class="block text-xs font-bold uppercase text-slate-600">
+                            <i class="fas fa-image text-[#FF500A] mr-1"></i> Cover Image URL
+                        </label>
+                        <input type="url" id="input-freebie-img" required placeholder="https://raw.githubusercontent.com/..." class="w-full px-3 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs">
+                        <div class="m-1 bg-white rounded-lg border border-slate-200 p-1">
+                            <img id="freebie-img-preview" src="https://raw.githubusercontent.com/Tharlin29/image/refs/heads/main/1795542505894.jpg" class="w-full h-40 object-contain rounded">
+                        </div>
+                    </div>
+                    <div class="p-3.5 rounded-xl border-2 border-emerald-200 bg-emerald-50/40 space-y-2.5">
+                        <label class="block text-xs font-bold uppercase text-emerald-800">
+                            <i class="fas fa-file-pdf text-rose-600 mr-1"></i> Direct Free PDF URL
+                        </label>
+                        <input type="url" id="input-freebie-link" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 outline-none text-xs" placeholder="https://raw.githubusercontent.com/.../gift.pdf">
+                        
+                        <label class="block text-xs font-semibold text-slate-600 pt-1">Display / Download File Name:</label>
+                        <input type="text" id="input-freebie-filename" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 outline-none text-xs" placeholder="GBTK-Featured-Gift.pdf">
+                    </div>
+                </div>
+
+                <!-- HERO UPSELL LINK TO FULL PAID BOOK -->
+                <div class="p-4 rounded-xl border-2 border-orange-200 bg-orange-50/60 space-y-3">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-crown text-[#FF500A]"></i>
+                        <label class="block text-xs font-extrabold uppercase text-[#FF500A]">
+                            Featured Hero -&gt; Full Paid Edition Link
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Select Matching Paid Book</label>
+                            <select id="input-freebie-linked-book-id" class="w-full px-3 py-2.5 rounded-lg border border-orange-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs font-semibold text-slate-800">
+                                <option value="">-- Link to All Books Section --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">OR Custom Direct Buy URL</label>
+                            <input type="url" id="input-freebie-custom-buy-url" placeholder="https://rocketr.net/buy/..." class="w-full px-3 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Upsell Headline Text</label>
+                        <input type="text" id="input-freebie-upsell-text" value="Want the full 20+ page book or full sticker pack? See the complete set here" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs">
+                    </div>
+                </div>
+
+                <button type="submit" id="save-freebie-btn" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl transition flex items-center gap-2">
+                    <i class="fas fa-save"></i> Save &amp; Update Featured Freebie
+                </button>
+            </form>
+        </div>
+
+        <!-- TAB 3: ROCKETR & NOWPAYMENTS CRYPTO PRODUCTS MANAGER -->
+        <div id="panel-products" class="admin-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
+                <div class="flex items-center justify-between mb-5">
+                    <h3 id="product-form-heading" class="text-lg font-bold text-slate-900">Add New Premium Book</h3>
+                    <button type="button" id="cancel-edit-btn" onclick="resetProductForm()" class="hidden text-xs font-bold text-slate-500 hover:text-[#FF500A] underline">
+                        Cancel Edit
+                    </button>
+                </div>
+
+                <form id="product-form" class="space-y-4">
+                    <input type="hidden" id="edit-prod-id" value="">
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Book Title</label>
+                        <input type="text" id="prod-title" required placeholder="e.g., 100-Page Christmas Coloring Book" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Price Tag</label>
+                            <input type="text" id="prod-price" required placeholder="e.g., $9.99" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">
+                                <i class="fas fa-folder-open text-[#FF500A] mr-1"></i> Category
+                            </label>
+                            <input type="text" id="prod-category" list="category-suggestions" placeholder="e.g., Christmas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Description Text</label>
+                        <textarea id="prod-desc" rows="3" required placeholder="Describe what is included in this book..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm"></textarea>
+                    </div>
+                    
+                    <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5">
+                        <label class="block text-xs font-bold uppercase text-slate-600">
+                            <i class="fas fa-link text-[#FF500A] mr-1"></i> Cover Image URL
+                        </label>
+                        <input type="url" id="prod-img" required placeholder="https://raw.githubusercontent.com/... or https://i.pinimg.com/..." class="w-full px-3 py-2.5 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-xs">
+                        <p class="text-[11px] text-slate-400">Paste a direct image link (GitHub Raw URL, Pinterest, Unsplash, etc.)</p>
+                        
+                        <div id="prod-img-preview-box" class="hidden pt-1">
+                            <div class="m-1 bg-white rounded-lg border border-slate-200 p-1">
+                                <img id="prod-img-preview" src="" alt="Cover Preview" class="w-full h-40 object-contain rounded" onerror="this.parentElement.parentElement.classList.add('hidden')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Links Section -->
+                    <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">
+                                <i class="fas fa-credit-card text-[#FF500A] mr-1"></i> Rocketr Checkout URL (Card / PayPal)
+                            </label>
+                            <input type="url" id="prod-link" required placeholder="https://rocketr.net/buy/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-emerald-700 mb-1">
+                                <i class="fas fa-coins text-emerald-600 mr-1"></i> NOWPayments Link (Optional - Crypto / USDT)
+                            </label>
+                            <input type="url" id="prod-crypto-link" placeholder="https://nowpayments.io/payment/?iid=..." class="w-full px-3.5 py-2.5 rounded-xl border border-emerald-300 bg-white focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                            <p class="text-[11px] text-slate-400 mt-1">Leave blank if you only want to show the Rocketr button.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="publish-prod-btn" class="w-full bg-[#FF500A] hover:bg-[#e04304] text-white font-bold py-3 rounded-xl transition text-sm shadow-md shadow-orange-500/20">
+                        <i class="fas fa-plus mr-1.5"></i> Publish Book to Store
+                    </button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-7 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">Published Premium Books</h3>
+                    <span id="product-count-badge" class="text-xs font-bold bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full">0 Books</span>
+                </div>
+                <div id="admin-products-list" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- TAB 4: ENGAGEMENT CONTROL (ALL SECTIONS) -->
+        <div id="panel-engagement" class="admin-panel hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Control Hearts &amp; Visitor Feedback (All Sections)</h3>
+                        <p class="text-sm text-slate-500">Edit heart counts or edit/delete visitor comments for Free Gifts, Featured Hero, and Books.</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 mb-3 flex items-center gap-1.5">
+                            <i class="fas fa-gift"></i> Free Printable Gifts
+                        </h4>
+                        <div id="admin-engagement-gifts" class="space-y-4"></div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-[#FF500A] mb-3 flex items-center gap-1.5">
+                            <i class="fas fa-star"></i> Featured Hero Freebie
+                        </h4>
+                        <div id="admin-engagement-hero"></div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
+                            <i class="fas fa-book"></i> Complete Editions &amp; Books
+                        </h4>
+                        <div id="admin-engagement-books" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: ADMIN SETTINGS & SECURITY -->
+        <div id="panel-security" class="admin-panel hidden max-w-3xl space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Change Admin Password</h3>
+                <p class="text-sm text-slate-500 mb-6">Update your Firebase Admin login password.</p>
+                <form id="change-password-form" class="space-y-4 max-w-md">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">New Password (Min 6 characters)</label>
+                        <input type="password" id="new-pass" required minlength="6" class="w-full px-4 py-2 rounded-xl border border-slate-300 outline-none focus:ring-2 focus:ring-[#FF500A]">
+                    </div>
+                    <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                        Update Password
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ==================== VISITOR FEEDBACK MODAL ==================== -->
+    <div id="feedback-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                <div>
+                    <span id="feedback-modal-badge" class="text-[11px] font-bold uppercase tracking-wider text-[#FF500A]">Reader Feedback</span>
+                    <h3 id="feedback-modal-book-title" class="font-extrabold text-lg text-slate-900 line-clamp-1">Item Title</h3>
+                </div>
+                <button onclick="closeFeedbackModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="feedback-list-container" class="flex-1 overflow-y-auto py-4 space-y-3 min-h-[150px] max-h-[300px]">
+                <p class="text-center text-sm text-slate-400 py-6">No feedback yet. Be the first to share your thoughts!</p>
+            </div>
+
+            <form id="visitor-feedback-form" class="pt-3 border-t border-slate-100 space-y-3">
+                <input type="hidden" id="feedback-target-type" value="">
+                <input type="hidden" id="feedback-target-prod-id" value="">
+                <div>
+                    <input type="text" id="visitor-name-input" required maxlength="40" placeholder="Your Name (e.g., Alex)" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="visitor-comment-input" required maxlength="250" placeholder="Write your feedback..." class="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                    <button type="submit" id="submit-feedback-btn" class="bg-[#FF500A] hover:bg-[#e04304] text-white font-bold px-4 py-2 rounded-xl text-sm transition shrink-0">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-white border-t border-slate-200 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>© 2026 GBTK STUDIO. All digital downloads are for personal use.</p>
+            <button id="footer-admin-btn" onclick="openLoginModal()" class="text-slate-400 hover:text-slate-700 transition text-xs flex items-center gap-1.5 p-2">
+                <i class="fas fa-lock"></i> <span>Admin Login</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- ==================== ADMIN LOGIN MODAL ==================== -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-extrabold text-lg text-slate-900">GBTK STUDIO Admin</h3>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div id="protocol-warning" class="hidden bg-amber-50 border border-amber-300 text-amber-900 text-xs p-3 rounded-xl mb-3 leading-relaxed">
+                <strong>⚠️ Local File Detected:</strong> Please open this website via your <strong>Vercel URL</strong> (<code>https://...vercel.app</code>) for Admin Login to work.
+            </div>
+
+            <form id="admin-login-form" class="space-y-3.5">
+                <div>
+                    <input type="email" id="login-email-input" required placeholder="Admin Email" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                </div>
+                <div>
+                    <input type="password" id="login-password-input" required placeholder="Password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                </div>
+                <p id="login-error" class="text-xs text-rose-600 hidden font-semibold bg-rose-50 p-2.5 rounded-lg border border-rose-200"></p>
+                <button type="submit" id="login-submit-btn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition text-sm">
+                    Sign In as Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== UI HELPER SCRIPT ==================== -->
+    <script>
+        window.DEFAULT_BRAND_IMAGE = "https://raw.githubusercontent.com/Tharlin29/image/refs/heads/main/1795542505894.jpg";
+        window.currentActiveView = 'user';
+        window.productsCache = {};
+        window.freeGiftsCache = {};
+        window.selectedGiftCategory = 'All';
+        window.selectedBookCategory = 'All';
+
+        // Slideshow State
+        window.showcaseSlides = [];
+        window.currentSlideIndex = 0;
+        window.slideshowTimer = null;
+        window.newestBookId = null;
+        window.newBookSpotlightActive = false;
+        window.newBookSpotlightCountdown = 0;
+        window.newBookCountdownTimer = null;
+
+        // Hide 3D Loading Splash Smoothly
+        window.hideLoadingSplash = function() {
+            const splash = document.getElementById('gbtk-loading-splash');
+            if (!splash || splash.dataset.hidden === "true") return;
+            splash.dataset.hidden = "true";
+            splash.style.opacity = '0';
+            splash.style.pointerEvents = 'none';
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 450);
+        };
+
+        setTimeout(() => {
+            window.hideLoadingSplash();
+        }, 2800);
+
+        window.featuredFreebieData = {
+            title: "GBTK STUDIO Free Printable Pack",
+            category: "3D Clay Stickers",
+            desc: "Download this high-resolution printable PDF pack completely free! Print at home or use digitally on your iPad.",
+            img: window.DEFAULT_BRAND_IMAGE,
+            link: "",
+            fileName: "GBTK-Featured-Gift.pdf",
+            linkedBookId: "",
+            customBuyUrl: "",
+            upsellText: "Want the full 20+ page book or full sticker pack? See the complete set here",
+            hearts: 0,
+            feedbacks: []
+        };
+
+        // ==================== AUTO BOOK SHOWCASE SLIDESHOW + 30S NEW BOOK 3D SPOTLIGHT ====================
+        window.rebuildShowcaseSlides = function(booksArray) {
+            const slides = [
+                {
+                    type: 'brand',
+                    id: 'brand-hero',
+                    img: window.DEFAULT_BRAND_IMAGE,
+                    tag: 'OFFICIAL STUDIO COLLECTION',
+                    title: 'GBTK STUDIO — Free Printables & Coloring Books',
+                    subtitle: 'Whimsical 3D coloring books, printable activity guides & sticker packs.',
+                    cta: 'Browse All Books',
+                    isNew: false
+                }
+            ];
+
+            if (Array.isArray(booksArray) && booksArray.length > 0) {
+                // booksArray is sorted newest first (index 0 is newest)
+                const newest = booksArray[0];
+                window.newestBookId = newest.id;
+
+                booksArray.forEach((b, idx) => {
+                    slides.push({
+                        type: 'book',
+                        id: b.id,
+                        img: b.img,
+                        tag: idx === 0 ? `NEW RELEASE • ${b.price}` : `${b.category || 'COMPLETE EDITION'} • ${b.price}`,
+                        title: b.title,
+                        subtitle: b.desc,
+                        cta: `View Book (${b.price})`,
+                        isNew: idx === 0
+                    });
+                });
+            } else {
+                window.newestBookId = null;
+            }
+
+            window.showcaseSlides = slides;
+            if (window.currentSlideIndex >= slides.length) {
+                window.currentSlideIndex = 0;
+            }
+            window.renderShowcaseSlide(false);
+            window.startSlideshowAutoPlay();
+        };
+
+        window.activate30SecondNewBookSpotlight = function() {
+            if (!window.newestBookId || window.showcaseSlides.length <= 1) return;
+
+            // Find the newest book slide (index 1)
+            const newBookIdx = window.showcaseSlides.findIndex(s => s.type === 'book' && s.id === window.newestBookId);
+            if (newBookIdx === -1) return;
+
+            window.currentSlideIndex = newBookIdx;
+            window.newBookSpotlightActive = true;
+            window.newBookSpotlightCountdown = 30;
+
+            // Pause standard 4.5s auto-rotation during the 30-second New Book Spotlight
+            if (window.slideshowTimer) {
+                clearInterval(window.slideshowTimer);
+                window.slideshowTimer = null;
+            }
+            if (window.newBookCountdownTimer) {
+                clearInterval(window.newBookCountdownTimer);
+            }
+
+            window.renderShowcaseSlide(true);
+
+            window.newBookCountdownTimer = setInterval(() => {
+                window.newBookSpotlightCountdown -= 1;
+                const timerBadge = document.getElementById('slideshow-new-timer-badge');
+                if (timerBadge && window.newBookSpotlightCountdown > 0) {
+                    timerBadge.innerText = `NEW RELEASE • ${window.newBookSpotlightCountdown}s SPOTLIGHT`;
+                }
+
+                if (window.newBookSpotlightCountdown <= 0) {
+                    clearInterval(window.newBookCountdownTimer);
+                    window.newBookCountdownTimer = null;
+                    window.newBookSpotlightActive = false;
+                    // Move to next slide and resume normal auto rotation
+                    window.currentSlideIndex = (window.currentSlideIndex + 1) % window.showcaseSlides.length;
+                    window.renderShowcaseSlide(false);
+                    window.startSlideshowAutoPlay();
+                }
+            }, 1000);
+        };
+
+        window.renderShowcaseSlide = function(forceNewOverlay) {
+            if (!window.showcaseSlides || window.showcaseSlides.length === 0) return;
+            const slide = window.showcaseSlides[window.currentSlideIndex];
+
+            const bgBlur = document.getElementById('slideshow-bg-blur');
+            const mainImg = document.getElementById('slideshow-main-img');
+            const tagEl = document.getElementById('slideshow-slide-tag');
+            const titleEl = document.getElementById('slideshow-slide-title');
+            const subEl = document.getElementById('slideshow-slide-subtitle');
+            const ctaEl = document.getElementById('slideshow-cta-text');
+            const counterEl = document.getElementById('slideshow-counter-pill');
+            const dotsEl = document.getElementById('slideshow-dots');
+            const newOverlay = document.getElementById('slideshow-new-book-3d-overlay');
+
+            if (bgBlur) bgBlur.src = slide.img;
+            if (mainImg) {
+                mainImg.classList.remove('slide-enter-anim');
+                void mainImg.offsetWidth;
+                mainImg.src = slide.img;
+                mainImg.classList.add('slide-enter-anim');
+                // Full bleed cover for brand banner, contain portrait for book covers
+                if (slide.type === 'brand') {
+                    mainImg.className = "w-full h-full max-h-[360px] object-cover rounded-2xl shadow-2xl transition duration-500 group-hover:scale-[1.02] slide-enter-anim";
+                } else {
+                    mainImg.className = "w-auto h-full max-h-[330px] aspect-[2/3] object-cover rounded-2xl shadow-2xl border-2 border-white/80 transition duration-500 group-hover:scale-[1.03] slide-enter-anim";
+                }
+            }
+
+            if (tagEl) tagEl.innerText = slide.tag;
+            if (titleEl) titleEl.innerText = slide.title;
+            if (subEl) subEl.innerText = slide.subtitle;
+            if (ctaEl) ctaEl.innerText = slide.cta;
+            if (counterEl) counterEl.innerText = `${window.currentSlideIndex + 1} / ${window.showcaseSlides.length}`;
+
+            // Show 3D "NEW COLORING BOOK!" overlay when in 30s spotlight or when newest book is active
+            if (newOverlay) {
+                if ((forceNewOverlay || window.newBookSpotlightActive) && slide.isNew) {
+                    newOverlay.classList.remove('hidden');
+                } else {
+                    newOverlay.classList.add('hidden');
+                }
+            }
+
+            if (dotsEl) {
+                dotsEl.innerHTML = window.showcaseSlides.map((_, idx) => `
+                    <button type="button" onclick="event.stopPropagation(); goToShowcaseSlide(${idx});" class="h-2 rounded-full transition-all ${idx === window.currentSlideIndex ? 'w-5 bg-[#FF500A]' : 'w-2 bg-white/55 hover:bg-white'}"></button>
+                `).join('');
+            }
+        };
+
+        window.startSlideshowAutoPlay = function() {
+            if (window.slideshowTimer) clearInterval(window.slideshowTimer);
+            if (window.newBookSpotlightActive) return;
+
+            window.slideshowTimer = setInterval(() => {
+                if (window.showcaseSlides.length <= 1) return;
+                const nextIdx = (window.currentSlideIndex + 1) % window.showcaseSlides.length;
+
+                // When a full auto-rotation cycle finishes (wrapping back to 0) and books exist,
+                // trigger the 30-second 3D New Book Spotlight on the newest book!
+                if (nextIdx === 0 && window.newestBookId && window.showcaseSlides.length > 1) {
+                    window.activate30SecondNewBookSpotlight();
+                } else {
+                    window.currentSlideIndex = nextIdx;
+                    window.renderShowcaseSlide(false);
+                }
+            }, 4500);
+        };
+
+        window.nextShowcaseSlide = function(isManual) {
+            if (window.showcaseSlides.length <= 1) return;
+            if (isManual && window.newBookSpotlightActive) {
+                clearInterval(window.newBookCountdownTimer);
+                window.newBookSpotlightActive = false;
+            }
+            window.currentSlideIndex = (window.currentSlideIndex + 1) % window.showcaseSlides.length;
+            window.renderShowcaseSlide(false);
+            if (isManual) window.startSlideshowAutoPlay();
+        };
+
+        window.prevShowcaseSlide = function() {
+            if (window.showcaseSlides.length <= 1) return;
+            if (window.newBookSpotlightActive) {
+                clearInterval(window.newBookCountdownTimer);
+                window.newBookSpotlightActive = false;
+            }
+            window.currentSlideIndex = (window.currentSlideIndex - 1 + window.showcaseSlides.length) % window.showcaseSlides.length;
+            window.renderShowcaseSlide(false);
+            window.startSlideshowAutoPlay();
+        };
+
+        window.goToShowcaseSlide = function(idx) {
+            if (window.newBookSpotlightActive) {
+                clearInterval(window.newBookCountdownTimer);
+                window.newBookSpotlightActive = false;
+            }
+            window.currentSlideIndex = idx;
+            window.renderShowcaseSlide(false);
+            window.startSlideshowAutoPlay();
+        };
+
+        window.handleSlideshowClick = function() {
+            const slide = window.showcaseSlides[window.currentSlideIndex];
+            if (!slide) return;
+            if (slide.type === 'book' && slide.id) {
+                window.jumpToPaidBook(slide.id, '');
+            } else {
+                const storeSec = document.getElementById('store-section');
+                if (storeSec) storeSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // ==================== EXACT PAID BOOK JUMP & DEEP-LINK SYSTEM ====================
+        window.jumpToPaidBook = function(bookId, customBuyUrl) {
+            window.closeDetailModal();
+            window.switchView('user');
+
+            if (bookId && window.productsCache[bookId]) {
+                if (window.selectedBookCategory !== 'All') {
+                    window.selectedBookCategory = 'All';
+                    if (typeof window.renderProductsUI === 'function') window.renderProductsUI();
+                }
+
+                try {
+                    history.replaceState(null, '', `#book-${bookId}`);
+                } catch (e) {}
+
+                setTimeout(() => {
+                    const cardEl = document.getElementById(`book-${bookId}`);
+                    if (cardEl) {
+                        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        cardEl.classList.remove('book-target-highlight');
+                        void cardEl.offsetWidth;
+                        cardEl.classList.add('book-target-highlight');
+                    }
+                    setTimeout(() => {
+                        window.openItemDetail('book', bookId);
+                    }, 480);
+                }, 80);
+                return;
+            }
+
+            if (customBuyUrl && customBuyUrl.trim().startsWith('http')) {
+                window.open(customBuyUrl.trim(), '_blank', 'noopener,noreferrer');
+                return;
+            }
+
+            const storeSec = document.getElementById('store-section');
+            if (storeSec) {
+                storeSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // Handle URL Hash Deep Links on Load
+        window.processDeepLinkHash = function() {
+            const hash = window.location.hash;
+            if (!hash || hash.length < 2) return;
+
+            if (hash.startsWith('#gift-')) {
+                const giftId = hash.replace('#gift-', '');
+                if (window.freeGiftsCache[giftId]) {
+                    const el = document.getElementById(`gift-${giftId}`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    window.openItemDetail('gift', giftId);
+                }
+            } else if (hash.startsWith('#book-')) {
+                const bookId = hash.replace('#book-', '');
+                if (window.productsCache[bookId]) {
+                    const el = document.getElementById(`book-${bookId}`);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('book-target-highlight');
+                    }
+                    window.openItemDetail('book', bookId);
+                }
+            }
+        };
+
+        // Quick Admin Navigation Helpers
+        window.quickAdminEditFeatured = function() {
+            window.closeDetailModal();
+            window.switchView('admin');
+            window.switchAdminTab('freebie');
+        };
+
+        window.quickAdminEditGift = function(giftId) {
+            window.closeDetailModal();
+            window.switchView('admin');
+            window.switchAdminTab('freegifts');
+            setTimeout(() => window.editFreeGift(giftId), 80);
+        };
+
+        window.quickAdminEditBook = function(bookId) {
+            window.closeDetailModal();
+            window.switchView('admin');
+            window.switchAdminTab('products');
+            setTimeout(() => window.editProduct(bookId), 80);
+        };
+
+        window.quickAdminAdd = function(tabName) {
+            window.switchView('admin');
+            window.switchAdminTab(tabName);
+            if (tabName === 'freegifts') window.resetGiftForm();
+            if (tabName === 'products') window.resetProductForm();
+        };
+
+        // Category Filter Handlers
+        window.selectGiftCategory = function(cat) {
+            window.selectedGiftCategory = cat;
+            if (typeof window.renderFreeGiftsUI === 'function') window.renderFreeGiftsUI();
+        };
+
+        window.selectBookCategory = function(cat) {
+            window.selectedBookCategory = cat;
+            if (typeof window.renderProductsUI === 'function') window.renderProductsUI();
+        };
+
+        // Direct PDF Download / Open Helper
+        window.triggerDirectPDFDownload = function(pdfUrl, fileName) {
+            if (!pdfUrl || pdfUrl === "#" || pdfUrl.trim() === "") {
+                alert("PDF link is not available yet. Please check back soon!");
+                return;
+            }
+            const cleanName = (fileName && fileName.endsWith('.pdf')) ? fileName : (fileName || 'GBTK-Free-Gift') + '.pdf';
+
+            const link = document.createElement('a');
+            link.href = pdfUrl.trim();
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.download = cleanName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        window.downloadFeaturedFreebiePDF = function() {
+            window.triggerDirectPDFDownload(
+                window.featuredFreebieData.link,
+                window.featuredFreebieData.fileName || window.featuredFreebieData.title
+            );
+        };
+
+        window.downloadGiftPDF = function(giftId) {
+            const g = window.freeGiftsCache[giftId];
+            if (!g) return;
+            window.triggerDirectPDFDownload(g.pdfData, g.pdfFileName || g.title);
+        };
+
+        // Item Detail Modal (Supports 'featured', 'gift', and 'book')
+        window.openItemDetail = function(type, id) {
+            const modal = document.getElementById('item-detail-modal');
+            const badge = document.getElementById('detail-modal-badge');
+            const catBadge = document.getElementById('detail-modal-category');
+            const img = document.getElementById('detail-modal-img');
+            const title = document.getElementById('detail-modal-title');
+            const stats = document.getElementById('detail-modal-stats');
+            const desc = document.getElementById('detail-modal-desc');
+            const actions = document.getElementById('detail-modal-actions');
+
+            const likedPosts = JSON.parse(localStorage.getItem("gbtk_liked_posts") || "{}");
+            const isAdmin = !!window.firebaseCurrentUser;
+
+            if (type === 'featured') {
+                const f = window.featuredFreebieData;
+                const isLiked = !!likedPosts['featured_hero'];
+                const safeTitleAttr = window.escapeHTML(f.title).replace(/'/g, "\'");
+                const itemCat = (f.category && f.category.trim()) ? f.category.trim() : "Featured Gift";
+
+                const linkedBook = (f.linkedBookId && window.productsCache[f.linkedBookId]) ? window.productsCache[f.linkedBookId] : null;
+                const customUrl = (f.customBuyUrl && f.customBuyUrl.trim().startsWith('http')) ? f.customBuyUrl.trim() : '';
+                const upsellHeadline = (f.upsellText && f.upsellText.trim())
+                    ? f.upsellText.trim()
+                    : "Want the full 20+ page book or full sticker pack? See the complete set here";
+
+                const safeLinkedId = linkedBook ? f.linkedBookId : '';
+                const safeCustomUrlAttr = customUrl.replace(/'/g, "\'");
+
+                let upsellBoxHtml = `
+                    <div class="mt-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 border border-orange-200 text-left">
+                        <p class="text-xs font-extrabold text-slate-900 leading-snug mb-2">
+                            <i class="fas fa-crown text-[#FF500A] mr-1"></i>
+                            ${window.escapeHTML(upsellHeadline)}
+                        </p>
+                        ${linkedBook ? `
+                        <div class="flex items-center gap-2.5 bg-white/90 p-2 rounded-xl border border-orange-200/80 mb-2.5">
+                            <img src="${linkedBook.img}" class="w-9 h-12 rounded object-cover shrink-0 border border-slate-200">
+                            <div class="min-w-0 flex-1">
+                                <p class="text-xs font-extrabold text-slate-900 truncate">${window.escapeHTML(linkedBook.title)}</p>
+                                <p class="text-[11px] font-bold text-[#FF500A]">Full Edition • ${window.escapeHTML(linkedBook.price)}</p>
+                            </div>
+                        </div>` : ''}
+                        <button onclick="jumpToPaidBook('${safeLinkedId}', '${safeCustomUrlAttr}')" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-[#FF500A] text-white text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
+                            <span>${linkedBook ? `Get Full Edition (${window.escapeHTML(linkedBook.price)})` : 'See the complete set here'}</span>
+                            <i class="fas fa-arrow-right text-[11px]"></i>
+                        </button>
+                    </div>
+                `;
+
+                badge.innerText = "#1 FEATURED FREEBIE";
+                badge.className = "text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md bg-orange-100 text-[#FF500A]";
+                catBadge.innerText = itemCat;
+                img.src = f.img;
+                title.innerText = f.title;
+                desc.innerText = f.desc;
+                stats.innerHTML = `
+                    <span class="bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200">100% FREE PDF</span>
+                    <span class="flex items-center gap-1"><i class="fas fa-heart text-rose-500"></i> ${f.hearts || 0} Hearts</span>
+                    <span class="flex items-center gap-1"><i class="fas fa-comment-dots text-amber-500"></i> ${(f.feedbacks || []).length} Reviews</span>
+                `;
+                actions.innerHTML = `
+                    <button onclick="downloadFeaturedFreebiePDF()" class="w-full inline-flex items-center justify-center gap-2 bg-[#FF500A] hover:bg-[#e04304] text-white font-extrabold text-sm py-3.5 px-6 rounded-full shadow-lg shadow-orange-500/25 transition active:scale-95">
+                        <i class="fas fa-download"></i>
+                        <span>Download Free PDF Now</span>
+                    </button>
+
+                    ${upsellBoxHtml}
+
+                    <div class="flex items-center gap-2 pt-1">
+                        <button onclick="toggleHeart('featured', 'hero'); openItemDetail('featured', 'hero');" class="flex-1 py-2.5 px-3 rounded-full border ${isLiked ? 'bg-rose-50 border-rose-200 text-rose-600' : 'bg-slate-50 border-slate-200 text-slate-600'} text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                            <i class="${isLiked ? 'fas' : 'far'} fa-heart text-rose-500"></i>
+                            <span>${isLiked ? 'Liked' : 'Heart'} (${f.hearts || 0})</span>
+                        </button>
+                        <button onclick="closeDetailModal(); openFeedbackModal('featured', 'hero');" class="flex-1 py-2.5 px-3 rounded-full border border-slate-200 bg-slate-50 hover:bg-amber-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                            <i class="far fa-comment-dots text-amber-600"></i>
+                            <span>Feedback (${(f.feedbacks || []).length})</span>
+                        </button>
+                        <button onclick="sharePost('${safeTitleAttr}', 'freebie-section')" class="py-2.5 px-3.5 rounded-full border border-slate-200 bg-slate-50 hover:bg-indigo-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition" title="Share">
+                            <i class="fas fa-share-alt text-indigo-500"></i>
+                        </button>
+                    </div>
+                    ${isAdmin ? `
+                    <button onclick="quickAdminEditFeatured()" class="w-full mt-2 py-2.5 px-4 rounded-full bg-slate-900 hover:bg-amber-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                        <i class="fas fa-edit"></i> Edit Featured Hero Post
+                    </button>` : ''}
+                `;
+            } else if (type === 'gift') {
+                const g = window.freeGiftsCache[id];
+                if (!g) return;
+                const isLiked = !!likedPosts[`gift_${id}`];
+                const safeTitleAttr = window.escapeHTML(g.title).replace(/'/g, "\'");
+                const itemCat = (g.category && g.category.trim()) ? g.category.trim() : "General";
+
+                const linkedBook = (g.linkedBookId && window.productsCache[g.linkedBookId]) ? window.productsCache[g.linkedBookId] : null;
+                const customUrl = (g.customBuyUrl && g.customBuyUrl.trim().startsWith('http')) ? g.customBuyUrl.trim() : '';
+                const upsellHeadline = (g.upsellLabel && g.upsellLabel.trim())
+                    ? g.upsellLabel.trim()
+                    : "Want the full 20+ page book or full sticker pack? See the complete set here";
+
+                const safeLinkedId = linkedBook ? g.linkedBookId : '';
+                const safeCustomUrlAttr = customUrl.replace(/'/g, "\'");
+
+                let upsellBoxHtml = `
+                    <div class="mt-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 border border-orange-200 text-left">
+                        <p class="text-xs font-extrabold text-slate-900 leading-snug mb-2">
+                            <i class="fas fa-crown text-[#FF500A] mr-1"></i>
+                            ${window.escapeHTML(upsellHeadline)}
+                        </p>
+                        ${linkedBook ? `
+                        <div class="flex items-center gap-2.5 bg-white/90 p-2 rounded-xl border border-orange-200/80 mb-2.5">
+                            <img src="${linkedBook.img}" class="w-9 h-12 rounded object-cover shrink-0 border border-slate-200">
+                            <div class="min-w-0 flex-1">
+                                <p class="text-xs font-extrabold text-slate-900 truncate">${window.escapeHTML(linkedBook.title)}</p>
+                                <p class="text-[11px] font-bold text-[#FF500A]">Full Edition • ${window.escapeHTML(linkedBook.price)}</p>
+                            </div>
+                        </div>` : ''}
+                        <button onclick="jumpToPaidBook('${safeLinkedId}', '${safeCustomUrlAttr}')" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-[#FF500A] text-white text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-sm transition active:scale-95">
+                            <span>${linkedBook ? `Get Full Edition (${window.escapeHTML(linkedBook.price)})` : 'See the complete set here'}</span>
+                            <i class="fas fa-arrow-right text-[11px]"></i>
+                        </button>
+                    </div>
+                `;
+
+                badge.innerText = "FREE PRINTABLE GIFT";
+                badge.className = "text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700";
+                catBadge.innerText = itemCat;
+                img.src = g.img;
+                title.innerText = g.title;
+                desc.innerText = g.desc;
+                stats.innerHTML = `
+                    <span class="bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200">FREE SAMPLE PDF</span>
+                    <span class="flex items-center gap-1"><i class="fas fa-heart text-rose-500"></i> ${g.hearts || 0} Hearts</span>
+                    <span class="flex items-center gap-1"><i class="fas fa-comment-dots text-amber-500"></i> ${(g.feedbacks || []).length} Reviews</span>
+                `;
+                actions.innerHTML = `
+                    <button onclick="downloadGiftPDF('${id}')" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 px-6 rounded-full shadow-lg shadow-emerald-600/25 transition active:scale-95">
+                        <i class="fas fa-download"></i>
+                        <span>Download Free PDF Now</span>
+                    </button>
+
+                    ${upsellBoxHtml}
+
+                    <div class="flex items-center gap-2 pt-1">
+                        <button onclick="toggleHeart('gift', '${id}'); openItemDetail('gift', '${id}');" class="flex-1 py-2.5 px-3 rounded-full border ${isLiked ? 'bg-rose-50 border-rose-200 text-rose-600' : 'bg-slate-50 border-slate-200 text-slate-600'} text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                            <i class="${isLiked ? 'fas' : 'far'} fa-heart text-rose-500"></i>
+                            <span>${isLiked ? 'Liked' : 'Heart'} (${g.hearts || 0})</span>
+                        </button>
+                        <button onclick="closeDetailModal(); openFeedbackModal('gift', '${id}');" class="flex-1 py-2.5 px-3 rounded-full border border-slate-200 bg-slate-50 hover:bg-amber-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                            <i class="far fa-comment-dots text-amber-600"></i>
+                            <span>Feedback (${(g.feedbacks || []).length})</span>
+                        </button>
+                        <button onclick="sharePost('${safeTitleAttr}', 'gift-${id}')" class="py-2.5 px-3.5 rounded-full border border-slate-200 bg-slate-50 hover:bg-indigo-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition" title="Share">
+                            <i class="fas fa-share-alt text-indigo-500"></i>
+                        </button>
+                    </div>
+                    ${isAdmin ? `
+                    <button onclick="quickAdminEditGift('${id}')" class="w-full mt-2 py-2.5 px-4 rounded-full bg-slate-900 hover:bg-amber-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                        <i class="fas fa-edit"></i> Edit This Gift & Paid Link
+                    </button>` : ''}
+                `;
+            } else if (type === 'book') {
+                const p = window.productsCache[id];
+                if (!p) return;
+                const isLiked = !!likedPosts[`book_${id}`];
+                const safeTitleAttr = window.escapeHTML(p.title).replace(/'/g, "\'");
+                const itemCat = (p.category && p.category.trim()) ? p.category.trim() : "General";
+                const hasCrypto = p.cryptoLink && p.cryptoLink.trim().startsWith('http');
+
+                badge.innerText = "COMPLETE DIGITAL EDITION";
+                badge.className = "text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md bg-orange-100 text-[#FF500A]";
+                catBadge.innerText = itemCat;
+                img.src = p.img;
+                title.innerText = p.title;
+                desc.innerText = p.desc;
+                stats.innerHTML = `
+                    <span class="bg-slate-900 text-white px-2.5 py-0.5 rounded-md">${window.escapeHTML(p.price)}</span>
+                    <span class="flex items-center gap-1"><i class="fas fa-heart text-rose-500"></i> ${p.hearts || 0} Hearts</span>
+                    <span class="flex items-center gap-1"><i class="fas fa-comment-dots text-amber-500"></i> ${(p.feedbacks || []).length} Reviews</span>
+                `;
+                actions.innerHTML = `
+                    <a href="${p.rocketrLink}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-[#FF500A] hover:bg-[#e04304] text-white font-extrabold text-sm py-3.5 px-6 rounded-full shadow-lg shadow-orange-500/25 transition">
+                        <span>Get Full Book on Rocketr (${window.escapeHTML(p.price)})</span>
+                        <i class="fas fa-arrow-right text-xs"></i>
+                    </a>
+                    ${hasCrypto ? `
+                    <a href="${p.cryptoLink}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/40 font-extrabold text-sm py-3 px-6 rounded-full shadow-md transition">
+                        <i class="fas fa-coins text-emerald-400"></i>
+                        <span>Pay with Crypto / USDT (${window.escapeHTML(p.price)})</span>
+                    </a>` : ''}
+                    <div class="flex items-center gap-2 pt-1">
+                        <button onclick="toggleHeart('book', '${id}'); openItemDetail('book', '${id}');" class="flex-1 py-2.5 px-3 rounded-full border ${isLiked ? 'bg-rose-50 border-rose-200 text-rose-600' : 'bg-slate-50 border-slate-200 text-slate-600'} text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                            <i class="${isLiked ? 'fas' : 'far'} fa-heart text-rose-500"></i>
+                            <span>${isLiked ? 'Liked' : 'Give Heart'} (${p.hearts || 0})</span>
+                        </button>
+                        <button onclick="closeDetailModal(); openFeedbackModal('book', '${id}');" class="flex-1 py-2.5 px-3 rounded-full border border-slate-200 bg-slate-50 hover:bg-amber-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                            <i class="far fa-comment-dots text-amber-600"></i>
+                            <span>Reviews (${(p.feedbacks || []).length})</span>
+                        </button>
+                        <button onclick="sharePost('${safeTitleAttr}', 'book-${id}')" class="py-2.5 px-3.5 rounded-full border border-slate-200 bg-slate-50 hover:bg-indigo-50 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition" title="Share">
+                            <i class="fas fa-share-alt text-indigo-500"></i>
+                        </button>
+                    </div>
+                    ${isAdmin ? `
+                    <button onclick="quickAdminEditBook('${id}')" class="w-full mt-2 py-2.5 px-4 rounded-full bg-slate-900 hover:bg-amber-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                        <i class="fas fa-edit"></i> Edit This Book (Image, Text, Links, Category)
+                    </button>` : ''}
+                `;
+            }
+
+            modal.classList.remove('hidden');
+        };
+
+        window.closeDetailModal = function() {
+            document.getElementById('item-detail-modal').classList.add('hidden');
+        };
+
+        window.switchView = function(view) {
+            if (view === 'admin' && !window.firebaseCurrentUser) {
+                window.openLoginModal();
+                return;
+            }
+            window.currentActiveView = view;
+            document.getElementById('user-view').style.display = view === 'user' ? 'block' : 'none';
+            document.getElementById('admin-view').style.display = view === 'admin' ? 'block' : 'none';
+            
+            const toggleBtn = document.getElementById('toggle-mode-btn');
+            if (toggleBtn) {
+                if (view === 'admin') {
+                    toggleBtn.innerHTML = `<i class="fas fa-eye"></i> <span>Preview User Page</span>`;
+                    toggleBtn.classList.replace('bg-[#FF500A]', 'bg-emerald-600');
+                    toggleBtn.classList.replace('hover:bg-[#e04304]', 'hover:bg-emerald-700');
+                } else {
+                    toggleBtn.innerHTML = `<i class="fas fa-sliders-h"></i> <span>Go to Admin Panel</span>`;
+                    toggleBtn.classList.replace('bg-emerald-600', 'bg-[#FF500A]');
+                    toggleBtn.classList.replace('hover:bg-emerald-700', 'hover:bg-[#e04304]');
+                }
+            }
+            if (view === 'admin') {
+                window.scrollTo(0, 0);
+            }
+        };
+
+        window.toggleAdminUserView = function() {
+            window.switchView(window.currentActiveView === 'admin' ? 'user' : 'admin');
+        };
+
+        window.switchAdminTab = function(tabName) {
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`panel-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.admin-tab').forEach(t => {
+                t.classList.remove('border-[#FF500A]', 'text-[#FF500A]', 'font-bold');
+                t.classList.add('border-transparent', 'text-slate-500', 'font-semibold');
+            });
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.add('border-[#FF500A]', 'text-[#FF500A]', 'font-bold');
+            activeTab.classList.remove('border-transparent', 'text-slate-500', 'font-semibold');
+        };
+
+        window.openLoginModal = function() {
+            if (window.firebaseCurrentUser) {
+                window.switchView('admin');
+                return;
+            }
+            if (window.location.protocol === 'content:' || window.location.protocol === 'file:') {
+                document.getElementById('protocol-warning').classList.remove('hidden');
+            }
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-email-input').focus();
+        };
+
+        window.closeLoginModal = function() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+        };
+
+        // Live Image URL Previews
+        document.getElementById('prod-img').addEventListener('input', function() {
+            const val = this.value.trim();
+            if (val) {
+                document.getElementById('prod-img-preview').src = val;
+                document.getElementById('prod-img-preview-box').classList.remove('hidden');
+            } else {
+                document.getElementById('prod-img-preview-box').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('gift-img').addEventListener('input', function() {
+            const val = this.value.trim();
+            if (val) {
+                document.getElementById('gift-img-preview').src = val;
+                document.getElementById('gift-img-preview-box').classList.remove('hidden');
+            } else {
+                document.getElementById('gift-img-preview-box').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('input-freebie-img').addEventListener('input', function() {
+            const val = this.value.trim();
+            if (val) {
+                document.getElementById('freebie-img-preview').src = val;
+            }
+        });
+
+        // Populate Book Form for Editing
+        window.editProduct = function(docId) {
+            const p = window.productsCache[docId];
+            if (!p) return;
+
+            document.getElementById('edit-prod-id').value = docId;
+            document.getElementById('prod-title').value = p.title || '';
+            document.getElementById('prod-price').value = p.price || '';
+            document.getElementById('prod-category').value = p.category || '';
+            document.getElementById('prod-desc').value = p.desc || '';
+            document.getElementById('prod-img').value = p.img || '';
+            document.getElementById('prod-link').value = p.rocketrLink || '';
+            document.getElementById('prod-crypto-link').value = p.cryptoLink || '';
+
+            if (p.img) {
+                document.getElementById('prod-img-preview').src = p.img;
+                document.getElementById('prod-img-preview-box').classList.remove('hidden');
+            }
+
+            document.getElementById('product-form-heading').innerText = "Edit Premium Book";
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            
+            const btn = document.getElementById('publish-prod-btn');
+            btn.innerHTML = `<i class="fas fa-check mr-1.5"></i> Update Book Changes`;
+            btn.classList.replace('bg-[#FF500A]', 'bg-emerald-600');
+            btn.classList.replace('hover:bg-[#e04304]', 'hover:bg-emerald-700');
+
+            document.getElementById('product-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        window.resetProductForm = function() {
+            document.getElementById('product-form').reset();
+            document.getElementById('edit-prod-id').value = "";
+            document.getElementById('product-form-heading').innerText = "Add New Premium Book";
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            document.getElementById('prod-img-preview-box').classList.add('hidden');
+
+            const btn = document.getElementById('publish-prod-btn');
+            btn.innerHTML = `<i class="fas fa-plus mr-1.5"></i> Publish Book to Store`;
+            btn.classList.replace('bg-emerald-600', 'bg-[#FF500A]');
+            btn.classList.replace('hover:bg-emerald-700', 'hover:bg-[#e04304]');
+        };
+
+        // Populate Free Gift Form for Editing
+        window.editFreeGift = function(giftId) {
+            const g = window.freeGiftsCache[giftId];
+            if (!g) return;
+
+            document.getElementById('edit-gift-id').value = giftId;
+            document.getElementById('gift-title').value = g.title || '';
+            document.getElementById('gift-category').value = g.category || '';
+            document.getElementById('gift-desc').value = g.desc || '';
+            document.getElementById('gift-img').value = g.img || '';
+            document.getElementById('gift-pdf-data').value = g.pdfData || '';
+            document.getElementById('gift-pdf-filename').value = g.pdfFileName || "GBTK-Free-Gift.pdf";
+            document.getElementById('gift-linked-book-id').value = g.linkedBookId || '';
+            document.getElementById('gift-custom-buy-url').value = g.customBuyUrl || '';
+            document.getElementById('gift-upsell-label').value = g.upsellLabel || "Want the full 20+ page book or full sticker pack? See the complete set here";
+
+            if (g.img) {
+                document.getElementById('gift-img-preview').src = g.img;
+                document.getElementById('gift-img-preview-box').classList.remove('hidden');
+            }
+
+            document.getElementById('gift-form-heading').innerText = "Edit Free PDF Gift & Paid Link";
+            document.getElementById('cancel-gift-edit-btn').classList.remove('hidden');
+            document.getElementById('publish-gift-btn').innerHTML = `<i class="fas fa-check mr-1.5"></i> Update Free PDF Gift`;
+
+            document.getElementById('free-gift-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        window.resetGiftForm = function() {
+            document.getElementById('free-gift-form').reset();
+            document.getElementById('edit-gift-id').value = "";
+            document.getElementById('gift-linked-book-id').value = "";
+            document.getElementById('gift-custom-buy-url').value = "";
+            document.getElementById('gift-upsell-label').value = "Want the full 20+ page book or full sticker pack? See the complete set here";
+            document.getElementById('gift-form-heading').innerText = "Add New Free PDF Gift";
+            document.getElementById('cancel-gift-edit-btn').classList.add('hidden');
+            document.getElementById('gift-img-preview-box').classList.add('hidden');
+            document.getElementById('publish-gift-btn').innerHTML = `<i class="fas fa-cloud-upload-alt mr-1.5"></i> Publish Free PDF Gift`;
+        };
+
+        window.sharePost = async function(title, hashAnchor) {
+            const shareUrl = `${window.location.origin}${window.location.pathname}#${hashAnchor}`;
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `${title} - GBTK STUDIO`,
+                        text: `Check out "${title}" on GBTK STUDIO!`,
+                        url: shareUrl
+                    });
+                } catch (err) {}
+            } else {
+                navigator.clipboard.writeText(shareUrl);
+                alert("Link copied to clipboard! You can share it anywhere.");
+            }
+        };
+
+        window.escapeHTML = function(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+            }[tag]));
+        };
+
+        // Initialize default brand slide right away
+        window.rebuildShowcaseSlides([]);
+    </script>
+
+    <!-- ==================== FIREBASE SDK & LOGIC ==================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, updateDoc, deleteDoc, collection, addDoc, onSnapshot, serverTimestamp, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBS6G-mexA_toDRo9RAAFDm1_ExtZj_PMc",
+            authDomain: "coloring-book-b154e.firebaseapp.com",
+            projectId: "coloring-book-b154e",
+            storageBucket: "coloring-book-b154e.firebasestorage.app",
+            messagingSenderId: "949610623419",
+            appId: "1:949610623419:web:10deda5e9c8fda63c9949e",
+            measurementId: "G-DGKY8PKZK0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.firebaseCurrentUser = null;
+
+        let heroHeartsCount = 0;
+        let giftsHeartsCount = 0;
+        let booksHeartsCount = 0;
+        let latestGiftsArray = [];
+        let latestBooksArray = [];
+        let initialDeepLinkHandled = false;
+        let knownBookIds = null;
+
+        let heroLoaded = false;
+        let giftsLoaded = false;
+        let booksLoaded = false;
+
+        function checkInitialLoadComplete() {
+            if (heroLoaded && giftsLoaded && booksLoaded) {
+                window.hideLoadingSplash();
+            }
+        }
+
+        function updateTotalHeartsDisplay() {
+            const total = heroHeartsCount + giftsHeartsCount + booksHeartsCount;
+            document.getElementById('stat-total-hearts').innerText = total.toLocaleString();
+        }
+
+        function normalizeUrl(url) {
+            if (!url) return "";
+            let clean = url.trim();
+            if (clean.toLowerCase().startsWith("https://")) return "https://" + clean.slice(8);
+            if (clean.toLowerCase().startsWith("http://")) return "http://" + clean.slice(7);
+            return "https://" + clean;
+        }
+
+        function extractFilenameFromUrl(url, fallback) {
+            try {
+                const pathname = new URL(url).pathname;
+                const lastSegment = decodeURIComponent(pathname.split('/').pop());
+                if (lastSegment && lastSegment.toLowerCase().endsWith('.pdf')) return lastSegment;
+            } catch (e) {}
+            return fallback;
+        }
+
+        function getCleanCategory(catStr) {
+            return (catStr && catStr.trim()) ? catStr.trim() : "General";
+        }
+
+        function getTargetDocRef(type, id) {
+            if (type === 'featured') return doc(db, "settings", "freebie");
+            if (type === 'gift') return doc(db, "freeGifts", id);
+            if (type === 'book') return doc(db, "products", id);
+            return null;
+        }
+
+        function getTargetCachedItem(type, id) {
+            if (type === 'featured') return window.featuredFreebieData;
+            if (type === 'gift') return window.freeGiftsCache[id];
+            if (type === 'book') return window.productsCache[id];
+            return null;
+        }
+
+        function populatePaidBookDropdowns() {
+            const giftSelect = document.getElementById('gift-linked-book-id');
+            const heroSelect = document.getElementById('input-freebie-linked-book-id');
+            if (!giftSelect || !heroSelect) return;
+
+            const currentGiftVal = giftSelect.value || (document.getElementById('edit-gift-id').value && window.freeGiftsCache[document.getElementById('edit-gift-id').value]?.linkedBookId) || "";
+            const currentHeroVal = heroSelect.value || window.featuredFreebieData.linkedBookId || "";
+
+            let optionsHtml = `<option value="">-- No Specific Book (Link to All Books Section) --</option>`;
+            latestBooksArray.forEach(b => {
+                optionsHtml += `<option value="${b.id}">${window.escapeHTML(b.title)} (${window.escapeHTML(b.price)})</option>`;
+            });
+
+            giftSelect.innerHTML = optionsHtml;
+            heroSelect.innerHTML = optionsHtml;
+
+            if (currentGiftVal) giftSelect.value = currentGiftVal;
+            if (currentHeroVal) heroSelect.value = currentHeroVal;
+        }
+
+        // ==================== REAL VISITOR TRACKER ====================
+        async function recordRealVisitor() {
+            if (window.location.protocol === 'file:' || window.location.protocol === 'content:') return;
+
+            const analyticsRef = doc(db, "analytics", "siteStats");
+            const isNewUniqueVisitor = !localStorage.getItem("gbtk_unique_visitor_id");
+            const isNewSession = !sessionStorage.getItem("gbtk_session_counted");
+
+            if (isNewUniqueVisitor) {
+                localStorage.setItem("gbtk_unique_visitor_id", "v_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9));
+            }
+
+            if (isNewSession) {
+                sessionStorage.setItem("gbtk_session_counted", "true");
+                try {
+                    await setDoc(analyticsRef, {
+                        totalViews: increment(1),
+                        uniqueVisitors: isNewUniqueVisitor ? increment(1) : increment(0),
+                        lastVisitAt: serverTimestamp()
+                    }, { merge: true });
+                } catch (err) {
+                    console.warn("Analytics update skipped:", err.message);
+                }
+            }
+        }
+        recordRealVisitor();
+
+        onSnapshot(doc(db, "analytics", "siteStats"), (snap) => {
+            if (snap.exists()) {
+                const stats = snap.data();
+                document.getElementById('stat-unique-visitors').innerText = (stats.uniqueVisitors || 0).toLocaleString();
+                document.getElementById('stat-total-views').innerText = (stats.totalViews || 0).toLocaleString();
+            }
+        });
+
+        // ==================== 1. AUTH STATE LISTENER ====================
+        onAuthStateChanged(auth, (user) => {
+            window.firebaseCurrentUser = user;
+            const topBanner = document.getElementById('admin-top-banner');
+            const roleBadge = document.getElementById('role-indicator-badge');
+            const footerBtn = document.getElementById('footer-admin-btn');
+            const navbar = document.getElementById('main-navbar');
+
+            document.querySelectorAll('.admin-only-control').forEach(el => {
+                if (user) {
+                    el.classList.remove('hidden');
+                    el.classList.add('flex');
+                } else {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                }
+            });
+
+            if (user) {
+                topBanner.classList.remove('hidden');
+                navbar.classList.remove('top-0');
+                navbar.classList.add('top-[41px]');
+                
+                document.getElementById('banner-admin-email').innerText = `Admin: ${user.email}`;
+                document.getElementById('admin-user-email').innerText = `Logged in as Admin (${user.email})`;
+                
+                roleBadge.innerText = "Admin";
+                roleBadge.className = "text-xs font-extrabold px-2.5 py-1 rounded-full bg-orange-100 text-[#FF500A] border border-orange-200";
+                
+                footerBtn.innerHTML = `<i class="fas fa-sliders-h text-[#FF500A]"></i> <span class="font-bold text-slate-700">Open Admin Panel</span>`;
+            } else {
+                topBanner.classList.add('hidden');
+                navbar.classList.add('top-0');
+                navbar.classList.remove('top-[41px]');
+
+                roleBadge.innerText = "Visitor";
+                roleBadge.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500";
+                
+                footerBtn.innerHTML = `<i class="fas fa-lock"></i> <span>Admin Login</span>`;
+                window.switchView('user');
+            }
+
+            window.renderFreeGiftsUI();
+            window.renderProductsUI();
+        });
+
+        // ==================== 2. LOGIN & PASSWORD ====================
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email-input').value.trim();
+            const pass = document.getElementById('login-password-input').value;
+            const errorEl = document.getElementById('login-error');
+            const btn = document.getElementById('login-submit-btn');
+
+            if (window.location.protocol === 'content:' || window.location.protocol === 'file:') {
+                errorEl.innerText = "Cannot login from local file. Deploy to Vercel first!";
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            btn.innerText = "Verifying...";
+            btn.disabled = true;
+            errorEl.classList.add('hidden');
+
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                window.closeLoginModal();
+                window.switchView('admin');
+            } catch (err) {
+                errorEl.innerText = err.message;
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.innerText = "Sign In as Admin";
+                btn.disabled = false;
+            }
+        });
+
+        window.logoutAdmin = async () => {
+            await signOut(auth);
+            window.switchView('user');
+        };
+
+        document.getElementById('change-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return;
+            const newPass = document.getElementById('new-pass').value;
+            try {
+                await updatePassword(window.firebaseCurrentUser, newPass);
+                alert("Password updated successfully!");
+                e.target.reset();
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        });
+
+        // ==================== HELPER: RENDER ADMIN ENGAGEMENT BLOCK ====================
+        function renderAdminEngagementCard(type, id, title, img, hearts, feedbacks) {
+            let feedbackItemsHtml = '';
+            if (!feedbacks || feedbacks.length === 0) {
+                feedbackItemsHtml = `<p class="text-xs text-slate-400 italic">No visitor feedback on this item yet.</p>`;
+            } else {
+                feedbacks.forEach((fb, idx) => {
+                    feedbackItemsHtml += `
+                        <div class="flex items-start justify-between gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/70">
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-xs text-slate-900">${window.escapeHTML(fb.name)}</span>
+                                    <span class="text-[10px] text-slate-400">${fb.date || ''}</span>
+                                </div>
+                                <p class="text-xs text-slate-700 mt-1 break-words">${window.escapeHTML(fb.comment)}</p>
+                            </div>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button onclick="adminEditFeedback('${type}', '${id}', ${idx})" class="px-2 py-1 rounded bg-white border border-slate-200 hover:bg-amber-50 text-amber-600 text-[11px] font-bold" title="Edit Feedback">
+                                    <i class="fas fa-pen"></i> Edit
+                                </button>
+                                <button onclick="adminDeleteFeedback('${type}', '${id}', ${idx})" class="px-2 py-1 rounded bg-white border border-slate-200 hover:bg-rose-50 text-rose-600 text-[11px] font-bold" title="Delete Feedback">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            return `
+                <div class="border border-slate-200 rounded-2xl p-5 bg-slate-50/40">
+                    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200 mb-4">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <img src="${img}" class="w-10 h-14 rounded-lg object-cover bg-white border border-slate-200 shrink-0">
+                            <div class="min-w-0">
+                                <h4 class="font-bold text-sm text-slate-900 truncate">${window.escapeHTML(title)}</h4>
+                                <span class="text-xs text-slate-500">${(feedbacks || []).length} Feedback(s)</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-slate-200">
+                            <i class="fas fa-heart text-rose-500"></i>
+                            <label class="text-xs font-bold text-slate-600">Hearts:</label>
+                            <input type="number" id="admin-heart-input-${type}-${id}" value="${hearts}" min="0" class="w-20 px-2 py-1 text-xs font-bold border border-slate-300 rounded-lg text-center outline-none focus:ring-2 focus:ring-[#FF500A]">
+                            <button onclick="adminSaveHearts('${type}', '${id}')" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-xs font-bold uppercase text-slate-500 mb-2">Visitor Feedbacks:</p>
+                        ${feedbackItemsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function refreshOpenFeedbackModalIfNeeded() {
+            const modal = document.getElementById('feedback-modal');
+            if (!modal.classList.contains('hidden')) {
+                const openType = document.getElementById('feedback-target-type').value;
+                const openId = document.getElementById('feedback-target-prod-id').value;
+                if (openType && openId) {
+                    renderModalFeedbackList(openType, openId);
+                }
+            }
+        }
+
+        // ==================== 3. FEATURED HERO FREEBIE REAL-TIME SYNC (COMPACT IMAGE + TITLE) ====================
+        const freebieDocRef = doc(db, "settings", "freebie");
+
+        function syncHeroUI(data) {
+            const hearts = data.hearts || 0;
+            const feedbacks = Array.isArray(data.feedbacks) ? data.feedbacks : [];
+            heroHeartsCount = hearts;
+            updateTotalHeartsDisplay();
+
+            window.featuredFreebieData = {
+                title: data.title || "GBTK STUDIO Free Printable Pack",
+                category: data.category || "3D Clay Stickers",
+                desc: data.desc || "Download this high-resolution printable PDF pack completely free! Print at home or use digitally on your iPad.",
+                img: data.img || window.DEFAULT_BRAND_IMAGE,
+                link: data.link || "",
+                fileName: data.fileName || "GBTK-Featured-Gift.pdf",
+                linkedBookId: data.linkedBookId || "",
+                customBuyUrl: data.customBuyUrl || "",
+                upsellText: data.upsellText || "Want the full 20+ page book or full sticker pack? See the complete set here",
+                hearts: hearts,
+                feedbacks: feedbacks
+            };
+
+            document.getElementById('display-freebie-title').innerText = window.featuredFreebieData.title;
+            document.getElementById('display-freebie-img').src = window.featuredFreebieData.img;
+
+            document.getElementById('admin-engagement-hero').innerHTML = renderAdminEngagementCard(
+                'featured',
+                'hero',
+                window.featuredFreebieData.title,
+                window.featuredFreebieData.img,
+                hearts,
+                feedbacks
+            );
+
+            refreshOpenFeedbackModalIfNeeded();
+        }
+
+        onSnapshot(freebieDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                syncHeroUI(data);
+
+                document.getElementById('input-freebie-title').value = window.featuredFreebieData.title;
+                document.getElementById('input-freebie-category').value = window.featuredFreebieData.category;
+                document.getElementById('input-freebie-desc').value = window.featuredFreebieData.desc;
+                document.getElementById('input-freebie-img').value = window.featuredFreebieData.img;
+                document.getElementById('freebie-img-preview').src = window.featuredFreebieData.img;
+                document.getElementById('input-freebie-link').value = window.featuredFreebieData.link;
+                document.getElementById('input-freebie-filename').value = window.featuredFreebieData.fileName;
+                document.getElementById('input-freebie-linked-book-id').value = window.featuredFreebieData.linkedBookId;
+                document.getElementById('input-freebie-custom-buy-url').value = window.featuredFreebieData.customBuyUrl;
+                document.getElementById('input-freebie-upsell-text').value = window.featuredFreebieData.upsellText;
+            } else {
+                syncHeroUI(window.featuredFreebieData);
+            }
+            heroLoaded = true;
+            checkInitialLoadComplete();
+        }, () => {
+            syncHeroUI(window.featuredFreebieData);
+            heroLoaded = true;
+            checkInitialLoadComplete();
+        });
+
+        // ==================== HELPER: BUILD CATEGORY FILTER TABS ====================
+        function buildCategoryTabsHtml(itemsArray, activeCategory, clickFnName, activeBgClass) {
+            const counts = {};
+            itemsArray.forEach(item => {
+                const cat = getCleanCategory(item.category);
+                counts[cat] = (counts[cat] || 0) + 1;
+            });
+
+            const categories = Object.keys(counts).sort();
+            if (categories.length <= 1 && (categories.length === 0 || categories[0] === 'General')) {
+                return '';
+            }
+
+            const allActive = activeCategory === 'All';
+            let html = `
+                <button onclick="${clickFnName}('All')" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold transition whitespace-nowrap border ${allActive ? `${activeBgClass} text-white border-transparent shadow-sm` : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}">
+                    All (${itemsArray.length})
+                </button>
+            `;
+
+            categories.forEach(cat => {
+                const isActive = activeCategory === cat;
+                const safeCatAttr = window.escapeHTML(cat).replace(/'/g, "\'");
+                html += `
+                    <button onclick="${clickFnName}('${safeCatAttr}')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap border ${isActive ? `${activeBgClass} text-white border-transparent shadow-sm` : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}">
+                        ${window.escapeHTML(cat)} <span class="opacity-75">(${counts[cat]})</span>
+                    </button>
+                `;
+            });
+
+            return html;
+        }
+
+        // ==================== 4. FREE GIFTS REAL-TIME SYNC & RENDER ====================
+        window.renderFreeGiftsUI = function() {
+            const grid = document.getElementById('free-gifts-grid');
+            const tabsContainer = document.getElementById('gift-category-tabs');
+            const visitorCountBadge = document.getElementById('visitor-gift-count');
+
+            if (latestGiftsArray.length === 0) {
+                tabsContainer.innerHTML = '';
+                grid.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-sm text-slate-400">More free printable gifts are coming soon!</div>`;
+                visitorCountBadge.innerText = `0 Freebies`;
+                return;
+            }
+
+            const validCats = new Set(latestGiftsArray.map(g => getCleanCategory(g.category)));
+            if (window.selectedGiftCategory !== 'All' && !validCats.has(window.selectedGiftCategory)) {
+                window.selectedGiftCategory = 'All';
+            }
+
+            tabsContainer.innerHTML = buildCategoryTabsHtml(latestGiftsArray, window.selectedGiftCategory, 'selectGiftCategory', 'bg-emerald-600');
+
+            const filteredGifts = window.selectedGiftCategory === 'All'
+                ? latestGiftsArray
+                : latestGiftsArray.filter(g => getCleanCategory(g.category) === window.selectedGiftCategory);
+
+            visitorCountBadge.innerText = window.selectedGiftCategory === 'All'
+                ? `${latestGiftsArray.length} Freebies`
+                : `${filteredGifts.length} of ${latestGiftsArray.length} Freebies`;
+
+            const likedPosts = JSON.parse(localStorage.getItem("gbtk_liked_posts") || "{}");
+            const isAdmin = !!window.firebaseCurrentUser;
+            let userGiftsHtml = '';
+
+            filteredGifts.forEach((g) => {
+                const id = g.id;
+                const hearts = g.hearts || 0;
+                const feedbacks = Array.isArray(g.feedbacks) ? g.feedbacks : [];
+                const itemCat = getCleanCategory(g.category);
+
+                const isLiked = !!likedPosts[`gift_${id}`];
+                const heartIconClass = isLiked ? "fas fa-heart text-rose-500" : "far fa-heart text-slate-400 group-hover:text-rose-500";
+                const safeTitleAttr = window.escapeHTML(g.title).replace(/'/g, "\'");
+
+                const linkedBook = (g.linkedBookId && window.productsCache[g.linkedBookId]) ? window.productsCache[g.linkedBookId] : null;
+                const customUrl = (g.customBuyUrl && g.customBuyUrl.trim().startsWith('http')) ? g.customBuyUrl.trim() : '';
+                const safeLinkedId = linkedBook ? g.linkedBookId : '';
+                const safeCustomUrlAttr = customUrl.replace(/'/g, "\'");
+
+                userGiftsHtml += `
+                    <div id="gift-${id}" class="wattpad-card group flex flex-col">
+                        <div onclick="openItemDetail('gift', '${id}')" class="relative rounded-xl overflow-hidden wattpad-cover bg-slate-200 cursor-pointer mb-2.5">
+                            <img src="${g.img}" alt="${window.escapeHTML(g.title)}" class="wattpad-cover-img w-full h-full object-cover transition duration-300">
+                            <span class="absolute top-2.5 left-2.5 bg-emerald-600/95 text-white font-extrabold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded shadow">
+                                FREE PDF
+                            </span>
+                            ${isAdmin ? `
+                            <button onclick="event.stopPropagation(); quickAdminEditGift('${id}')" class="absolute top-2.5 right-2.5 bg-slate-900/90 hover:bg-amber-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow flex items-center gap-1 transition" title="Edit Gift">
+                                <i class="fas fa-pen"></i> Edit
+                            </button>` : ''}
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+                                <span class="text-white text-xs font-bold flex items-center gap-1.5">
+                                    <i class="fas fa-eye"></i> Preview &amp; Full Set
+                                </span>
+                            </div>
+                        </div>
+
+                        ${itemCat !== 'General' ? `
+                        <span onclick="selectGiftCategory('${window.escapeHTML(itemCat).replace(/'/g, "\'")}')" class="self-start text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded mb-1 cursor-pointer hover:bg-emerald-100 transition">
+                            ${window.escapeHTML(itemCat)}
+                        </span>` : ''}
+
+                        <h3 onclick="openItemDetail('gift', '${id}')" class="font-bold text-sm sm:text-[15px] text-slate-900 line-clamp-2 leading-snug cursor-pointer group-hover:text-[#FF500A] transition mb-1.5">
+                            ${window.escapeHTML(g.title)}
+                        </h3>
+
+                        <!-- Interactive Stats Bar -->
+                        <div class="flex items-center gap-3 text-xs font-bold text-slate-500 mb-3">
+                            <button onclick="toggleHeart('gift', '${id}')" class="flex items-center gap-1 hover:text-rose-500 transition">
+                                <i class="${heartIconClass}"></i>
+                                <span>${hearts}</span>
+                            </button>
+                            <button onclick="openFeedbackModal('gift', '${id}')" class="flex items-center gap-1 hover:text-amber-600 transition">
+                                <i class="far fa-comment-dots"></i>
+                                <span>${feedbacks.length}</span>
+                            </button>
+                            <button onclick="sharePost('${safeTitleAttr}', 'gift-${id}')" class="ml-auto text-slate-400 hover:text-indigo-600 transition" title="Share">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-auto space-y-1.5">
+                            <button onclick="downloadGiftPDF('${id}')" class="w-full inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition active:scale-95">
+                                <i class="fas fa-download"></i>
+                                <span>Download Free PDF</span>
+                            </button>
+
+                            <button onclick="jumpToPaidBook('${safeLinkedId}', '${safeCustomUrlAttr}')" class="w-full inline-flex items-center justify-center gap-1 bg-orange-50 hover:bg-[#FF500A] text-[#FF500A] hover:text-white border border-orange-200/90 font-extrabold text-[11px] py-2 px-2.5 rounded-lg transition active:scale-95">
+                                <i class="fas fa-crown text-[10px]"></i>
+                                <span class="truncate">${linkedBook ? `Get Full Edition (${window.escapeHTML(linkedBook.price)})` : 'See Complete Set'}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = userGiftsHtml;
+        };
+
+        const freeGiftsCol = collection(db, "freeGifts");
+        onSnapshot(freeGiftsCol, (snapshot) => {
+            const adminList = document.getElementById('admin-gifts-list');
+            const adminEngagementGifts = document.getElementById('admin-engagement-gifts');
+            const countBadge = document.getElementById('gift-count-badge');
+
+            window.freeGiftsCache = {};
+            countBadge.innerText = `${snapshot.size} Gifts`;
+
+            let currentGiftsHearts = 0;
+            latestGiftsArray = [];
+
+            if (snapshot.empty) {
+                adminList.innerHTML = `<div class="bg-white p-6 rounded-xl border border-slate-200 text-center text-sm text-slate-400">No free PDF gifts published yet. Use the form on the left to add one!</div>`;
+                adminEngagementGifts.innerHTML = `<p class="text-xs text-slate-400">No free gifts published yet.</p>`;
+                giftsHeartsCount = 0;
+                updateTotalHeartsDisplay();
+                window.renderFreeGiftsUI();
+                giftsLoaded = true;
+                checkInitialLoadComplete();
+                return;
+            }
+
+            snapshot.forEach((docItem) => {
+                latestGiftsArray.push({ id: docItem.id, ...docItem.data() });
+            });
+            latestGiftsArray.sort((a, b) => {
+                const tA = a.createdAt && a.createdAt.seconds ? a.createdAt.seconds : 0;
+                const tB = b.createdAt && b.createdAt.seconds ? b.createdAt.seconds : 0;
+                return tB - tA;
+            });
+
+            let adminGiftsHtml = '';
+            let engagementGiftsHtml = '';
+
+            latestGiftsArray.forEach((g) => {
+                const id = g.id;
+                const hearts = g.hearts || 0;
+                const feedbacks = Array.isArray(g.feedbacks) ? g.feedbacks : [];
+                const itemCat = getCleanCategory(g.category);
+                currentGiftsHearts += hearts;
+
+                window.freeGiftsCache[id] = { ...g, hearts, feedbacks };
+                const displayFileName = g.pdfFileName || "Free-Gift.pdf";
+                const linkedBook = (g.linkedBookId && window.productsCache[g.linkedBookId]) ? window.productsCache[g.linkedBookId] : null;
+
+                adminGiftsHtml += `
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between gap-4 hover:border-emerald-300 transition">
+                        <div class="flex items-center gap-3.5 min-w-0">
+                            <img src="${g.img}" class="w-12 h-16 rounded-lg object-cover bg-slate-100 shrink-0 border border-slate-200">
+                            <div class="min-w-0">
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded">FREE PDF</span>
+                                    <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">${window.escapeHTML(itemCat)}</span>
+                                    <h4 class="font-bold text-sm text-slate-900 truncate">${window.escapeHTML(g.title)}</h4>
+                                </div>
+                                <p class="text-xs text-slate-500 truncate mt-1">
+                                    <span class="text-rose-500 font-bold"><i class="fas fa-heart"></i> ${hearts}</span> • 
+                                    <span>${feedbacks.length} Feedbacks</span> • 
+                                    <i class="fas fa-file-pdf text-rose-500 ml-1"></i> ${window.escapeHTML(displayFileName)}
+                                </p>
+                                ${linkedBook ? `
+                                <p class="text-[11px] font-bold text-[#FF500A] truncate mt-0.5">
+                                    <i class="fas fa-link mr-1"></i> Linked Paid Book: ${window.escapeHTML(linkedBook.title)} (${window.escapeHTML(linkedBook.price)})
+                                </p>` : (g.customBuyUrl ? `
+                                <p class="text-[11px] font-bold text-[#FF500A] truncate mt-0.5">
+                                    <i class="fas fa-link mr-1"></i> Direct Buy URL Connected
+                                </p>` : '')}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="downloadGiftPDF('${id}')" class="px-2.5 py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold transition" title="Test Download">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button onclick="editFreeGift('${id}')" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-700 text-xs font-bold transition flex items-center gap-1">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button onclick="deleteFreeGift('${id}')" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-600 text-xs font-bold transition flex items-center gap-1">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                engagementGiftsHtml += renderAdminEngagementCard('gift', id, g.title, g.img, hearts, feedbacks);
+            });
+
+            adminList.innerHTML = adminGiftsHtml;
+            adminEngagementGifts.innerHTML = engagementGiftsHtml;
+
+            giftsHeartsCount = currentGiftsHearts;
+            updateTotalHeartsDisplay();
+            window.renderFreeGiftsUI();
+            refreshOpenFeedbackModalIfNeeded();
+
+            giftsLoaded = true;
+            checkInitialLoadComplete();
+
+            if (!initialDeepLinkHandled && Object.keys(window.productsCache).length > 0) {
+                initialDeepLinkHandled = true;
+                window.processDeepLinkHash();
+            }
+        }, (error) => {
+            console.error("FreeGifts listener error:", error);
+            document.getElementById('free-gifts-grid').innerHTML = `<div class="col-span-full text-center py-6 text-rose-500 text-xs">Unable to load free gifts: ${error.message}</div>`;
+            giftsLoaded = true;
+            checkInitialLoadComplete();
+        });
+
+        // Save / Update Free Gift Form Submit
+        document.getElementById('free-gift-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return alert("Unauthorized! Please login as Admin.");
+
+            const rawImgUrl = document.getElementById('gift-img').value.trim();
+            const rawPdfUrl = document.getElementById('gift-pdf-data').value.trim();
+
+            if (!rawImgUrl) return alert("Please enter a Cover Image URL!");
+            if (!rawPdfUrl) return alert("Please enter a Direct PDF URL!");
+
+            const imgUrl = normalizeUrl(rawImgUrl);
+            const pdfUrl = normalizeUrl(rawPdfUrl);
+            const customFileName = document.getElementById('gift-pdf-filename').value.trim();
+            const pdfFileName = customFileName || extractFilenameFromUrl(pdfUrl, "GBTK-Free-Gift.pdf");
+            const categoryVal = getCleanCategory(document.getElementById('gift-category').value);
+
+            const linkedBookId = document.getElementById('gift-linked-book-id').value.trim();
+            const rawCustomBuyUrl = document.getElementById('gift-custom-buy-url').value.trim();
+            const customBuyUrl = rawCustomBuyUrl ? normalizeUrl(rawCustomBuyUrl) : "";
+            const upsellLabel = document.getElementById('gift-upsell-label').value.trim() || "Want the full 20+ page book or full sticker pack? See the complete set here";
+
+            const editId = document.getElementById('edit-gift-id').value;
+            const btn = document.getElementById('publish-gift-btn');
+            btn.disabled = true;
+            btn.innerText = editId ? "Updating Gift..." : "Publishing Gift...";
+
+            const giftPayload = {
+                title: document.getElementById('gift-title').value.trim(),
+                category: categoryVal,
+                desc: document.getElementById('gift-desc').value.trim(),
+                img: imgUrl,
+                pdfData: pdfUrl,
+                pdfFileName: pdfFileName,
+                linkedBookId: linkedBookId,
+                customBuyUrl: customBuyUrl,
+                upsellLabel: upsellLabel
+            };
+
+            try {
+                if (editId) {
+                    giftPayload.updatedAt = serverTimestamp();
+                    await updateDoc(doc(db, "freeGifts", editId), giftPayload);
+                    alert("Free PDF Gift & Paid Book link updated successfully!");
+                } else {
+                    giftPayload.createdAt = serverTimestamp();
+                    giftPayload.hearts = 0;
+                    giftPayload.feedbacks = [];
+                    await addDoc(collection(db, "freeGifts"), giftPayload);
+                    alert("New Free PDF Gift published!");
+                }
+                window.resetGiftForm();
+            } catch (err) {
+                alert("Error saving Free Gift: " + err.message);
+            } finally {
+                btn.disabled = false;
+                if (!document.getElementById('edit-gift-id').value) {
+                    btn.innerHTML = `<i class="fas fa-cloud-upload-alt mr-1.5"></i> Publish Free PDF Gift`;
+                }
+            }
+        });
+
+        window.deleteFreeGift = async (giftId) => {
+            if (!window.firebaseCurrentUser) return;
+            if (confirm("Are you sure you want to delete this Free PDF Gift?")) {
+                try {
+                    await deleteDoc(doc(db, "freeGifts", giftId));
+                    if (document.getElementById('edit-gift-id').value === giftId) {
+                        window.resetGiftForm();
+                    }
+                } catch (err) {
+                    alert("Delete failed: " + err.message);
+                }
+            }
+        };
+
+        // ==================== 5. PREMIUM BOOKS, SLIDESHOW SYNC & 30S NEW BOOK SPOTLIGHT ====================
+        window.renderProductsUI = function() {
+            const grid = document.getElementById('products-grid');
+            const tabsContainer = document.getElementById('book-category-tabs');
+            const visitorBookBadge = document.getElementById('visitor-book-count');
+
+            if (latestBooksArray.length === 0) {
+                tabsContainer.innerHTML = '';
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500">New digital books coming soon!</div>`;
+                visitorBookBadge.innerText = `0 Books`;
+                return;
+            }
+
+            const validCats = new Set(latestBooksArray.map(b => getCleanCategory(b.category)));
+            if (window.selectedBookCategory !== 'All' && !validCats.has(window.selectedBookCategory)) {
+                window.selectedBookCategory = 'All';
+            }
+
+            tabsContainer.innerHTML = buildCategoryTabsHtml(latestBooksArray, window.selectedBookCategory, 'selectBookCategory', 'bg-[#FF500A]');
+
+            const filteredBooks = window.selectedBookCategory === 'All'
+                ? latestBooksArray
+                : latestBooksArray.filter(b => getCleanCategory(b.category) === window.selectedBookCategory);
+
+            visitorBookBadge.innerText = window.selectedBookCategory === 'All'
+                ? `${latestBooksArray.length} Books`
+                : `${filteredBooks.length} of ${latestBooksArray.length} Books`;
+
+            const likedPosts = JSON.parse(localStorage.getItem("gbtk_liked_posts") || "{}");
+            const isAdmin = !!window.firebaseCurrentUser;
+            let userHtml = '';
+
+            filteredBooks.forEach((p) => {
+                const id = p.id;
+                const hearts = p.hearts || 0;
+                const feedbacks = Array.isArray(p.feedbacks) ? p.feedbacks : [];
+                const itemCat = getCleanCategory(p.category);
+                const hasCrypto = p.cryptoLink && p.cryptoLink.trim().startsWith('http');
+
+                const isLiked = !!likedPosts[`book_${id}`];
+                const heartIconClass = isLiked ? "fas fa-heart text-rose-500" : "far fa-heart text-slate-400 group-hover:text-rose-500";
+                const safeTitleAttr = window.escapeHTML(p.title).replace(/'/g, "\'");
+
+                userHtml += `
+                    <div id="book-${id}" class="wattpad-card group flex flex-col">
+                        <div onclick="openItemDetail('book', '${id}')" class="relative rounded-xl overflow-hidden wattpad-cover bg-slate-200 cursor-pointer mb-2.5">
+                            <img src="${p.img}" alt="${window.escapeHTML(p.title)}" class="wattpad-cover-img w-full h-full object-cover transition duration-300">
+                            <span class="absolute top-2.5 right-2.5 bg-slate-900/90 text-white font-extrabold text-xs px-2.5 py-1 rounded-md backdrop-blur-sm shadow">
+                                ${window.escapeHTML(p.price)}
+                            </span>
+                            ${isAdmin ? `
+                            <button onclick="event.stopPropagation(); quickAdminEditBook('${id}')" class="absolute top-2.5 left-2.5 bg-slate-900/90 hover:bg-amber-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow flex items-center gap-1 transition" title="Edit Book">
+                                <i class="fas fa-pen"></i> Edit
+                            </button>` : ''}
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+                                <span class="text-white text-xs font-bold flex items-center gap-1.5">
+                                    <i class="fas fa-book-open"></i> Read Details
+                                </span>
+                            </div>
+                        </div>
+
+                        ${itemCat !== 'General' ? `
+                        <span onclick="selectBookCategory('${window.escapeHTML(itemCat).replace(/'/g, "\'")}')" class="self-start text-[10px] font-bold text-[#FF500A] bg-orange-50 border border-orange-200/80 px-2 py-0.5 rounded mb-1 cursor-pointer hover:bg-orange-100 transition">
+                            ${window.escapeHTML(itemCat)}
+                        </span>` : ''}
+
+                        <h3 onclick="openItemDetail('book', '${id}')" class="font-bold text-sm sm:text-[15px] text-slate-900 line-clamp-2 leading-snug cursor-pointer group-hover:text-[#FF500A] transition mb-1.5">
+                            ${window.escapeHTML(p.title)}
+                        </h3>
+
+                        <!-- Interactive Stats Bar -->
+                        <div class="flex items-center gap-3 text-xs font-bold text-slate-500 mb-3">
+                            <button onclick="toggleHeart('book', '${id}')" class="flex items-center gap-1 hover:text-rose-500 transition">
+                                <i class="${heartIconClass}"></i>
+                                <span>${hearts}</span>
+                            </button>
+                            <button onclick="openFeedbackModal('book', '${id}')" class="flex items-center gap-1 hover:text-amber-600 transition">
+                                <i class="far fa-comment-dots"></i>
+                                <span>${feedbacks.length}</span>
+                            </button>
+                            <button onclick="sharePost('${safeTitleAttr}', 'book-${id}')" class="ml-auto text-slate-400 hover:text-indigo-600 transition" title="Share">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+
+                        <div class="mt-auto space-y-1.5">
+                            <a href="${p.rocketrLink}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-1.5 bg-[#FF500A] hover:bg-[#e04304] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition">
+                                <span>Buy on Rocketr</span>
+                                <i class="fas fa-arrow-right text-[10px]"></i>
+                            </a>
+                            ${hasCrypto ? `
+                            <a href="${p.cryptoLink}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-emerald-500/40 font-bold text-xs py-2 px-3 rounded-lg shadow-sm transition">
+                                <i class="fas fa-coins text-[10px]"></i>
+                                <span>Pay with Crypto</span>
+                            </a>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = userHtml;
+        };
+
+        const productsCol = collection(db, "products");
+        onSnapshot(productsCol, (snapshot) => {
+            const adminList = document.getElementById('admin-products-list');
+            const adminEngagementBooks = document.getElementById('admin-engagement-books');
+            const countBadge = document.getElementById('product-count-badge');
+
+            window.productsCache = {};
+            countBadge.innerText = `${snapshot.size} Books`;
+
+            let currentBooksHearts = 0;
+            latestBooksArray = [];
+
+            if (snapshot.empty) {
+                adminList.innerHTML = `<div class="bg-white p-6 rounded-xl border border-slate-200 text-center text-sm text-slate-400">No books published yet.</div>`;
+                adminEngagementBooks.innerHTML = `<p class="text-xs text-slate-400">No books published yet.</p>`;
+                booksHeartsCount = 0;
+                updateTotalHeartsDisplay();
+                populatePaidBookDropdowns();
+                window.rebuildShowcaseSlides([]);
+                window.renderProductsUI();
+                knownBookIds = new Set();
+                booksLoaded = true;
+                checkInitialLoadComplete();
+                return;
+            }
+
+            snapshot.forEach((docItem) => {
+                latestBooksArray.push({ id: docItem.id, ...docItem.data() });
+            });
+            latestBooksArray.sort((a, b) => {
+                const tA = a.createdAt && a.createdAt.seconds ? a.createdAt.seconds : 0;
+                const tB = b.createdAt && b.createdAt.seconds ? b.createdAt.seconds : 0;
+                return tB - tA;
+            });
+
+            // Detect if a brand new book was just added while viewing
+            const currentIds = new Set(latestBooksArray.map(b => b.id));
+            let hasBrandNewBookAdded = false;
+            if (knownBookIds !== null) {
+                for (const id of currentIds) {
+                    if (!knownBookIds.has(id)) {
+                        hasBrandNewBookAdded = true;
+                        break;
+                    }
+                }
+            }
+            knownBookIds = currentIds;
+
+            let adminHtml = '';
+            let engagementHtml = '';
+
+            latestBooksArray.forEach((p) => {
+                const id = p.id;
+                const hearts = p.hearts || 0;
+                const feedbacks = Array.isArray(p.feedbacks) ? p.feedbacks : [];
+                const itemCat = getCleanCategory(p.category);
+                const hasCrypto = p.cryptoLink && p.cryptoLink.trim().startsWith('http');
+                currentBooksHearts += hearts;
+
+                window.productsCache[id] = { ...p, hearts, feedbacks };
+
+                adminHtml += `
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between gap-4 hover:border-slate-300 transition">
+                        <div class="flex items-center gap-3.5 min-w-0">
+                            <img src="${p.img}" class="w-12 h-16 rounded-lg object-cover bg-slate-100 shrink-0 border border-slate-200">
+                            <div class="min-w-0">
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="bg-orange-100 text-[#FF500A] text-[10px] font-bold px-2 py-0.5 rounded">${window.escapeHTML(itemCat)}</span>
+                                    ${hasCrypto ? `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded"><i class="fas fa-coins mr-0.5"></i> CRYPTO ON</span>` : ''}
+                                    <h4 class="font-bold text-sm text-slate-900 truncate">${window.escapeHTML(p.title)}</h4>
+                                </div>
+                                <p class="text-xs font-semibold text-emerald-600 mt-0.5">${window.escapeHTML(p.price)} • <span class="text-rose-500"><i class="fas fa-heart"></i> ${hearts}</span> • <span class="text-slate-500">${feedbacks.length} Feedbacks</span></p>
+                                <a href="${p.rocketrLink}" target="_blank" class="text-xs text-slate-400 hover:underline truncate block mt-0.5">Rocketr: ${p.rocketrLink}</a>
+                                ${hasCrypto ? `<a href="${p.cryptoLink}" target="_blank" class="text-xs text-emerald-600 hover:underline truncate block">Crypto: ${p.cryptoLink}</a>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="editProduct('${id}')" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-700 text-xs font-bold transition flex items-center gap-1">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button onclick="deleteProduct('${id}')" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-600 text-xs font-bold transition flex items-center gap-1">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                engagementHtml += renderAdminEngagementCard('book', id, p.title, p.img, hearts, feedbacks);
+            });
+
+            adminList.innerHTML = adminHtml;
+            adminEngagementBooks.innerHTML = engagementHtml;
+
+            booksHeartsCount = currentBooksHearts;
+            updateTotalHeartsDisplay();
+            populatePaidBookDropdowns();
+            window.rebuildShowcaseSlides(latestBooksArray);
+            window.renderFreeGiftsUI();
+            window.renderProductsUI();
+            refreshOpenFeedbackModalIfNeeded();
+
+            // If a new book was just published, immediately spotlight it with the 30s 3D overlay
+            if (hasBrandNewBookAdded) {
+                window.activate30SecondNewBookSpotlight();
+            }
+
+            booksLoaded = true;
+            checkInitialLoadComplete();
+
+            if (!initialDeepLinkHandled) {
+                initialDeepLinkHandled = true;
+                window.processDeepLinkHash();
+            }
+        }, () => {
+            booksLoaded = true;
+            checkInitialLoadComplete();
+        });
+
+        // ==================== 6. UNIVERSAL VISITOR HEART & FEEDBACK ACTIONS ====================
+        window.toggleHeart = async (type, id) => {
+            const storageKey = `${type}_${id}`;
+            const likedPosts = JSON.parse(localStorage.getItem("gbtk_liked_posts") || "{}");
+            const currentlyLiked = !!likedPosts[storageKey];
+            const docRef = getTargetDocRef(type, id);
+            if (!docRef) return;
+
+            try {
+                if (currentlyLiked) {
+                    delete likedPosts[storageKey];
+                    localStorage.setItem("gbtk_liked_posts", JSON.stringify(likedPosts));
+                    await setDoc(docRef, { hearts: increment(-1) }, { merge: true });
+                } else {
+                    likedPosts[storageKey] = true;
+                    localStorage.setItem("gbtk_liked_posts", JSON.stringify(likedPosts));
+                    await setDoc(docRef, { hearts: increment(1) }, { merge: true });
+                }
+            } catch (err) {
+                console.error("Heart update failed:", err);
+            }
+        };
+
+        window.openFeedbackModal = (type, id) => {
+            const item = getTargetCachedItem(type, id);
+            if (!item) return;
+
+            const badgeEl = document.getElementById('feedback-modal-badge');
+            if (type === 'featured') {
+                badgeEl.innerText = "Featured Freebie Feedback";
+                badgeEl.className = "text-[11px] font-bold uppercase tracking-wider text-[#FF500A]";
+            } else if (type === 'gift') {
+                badgeEl.innerText = "Free Gift Feedback";
+                badgeEl.className = "text-[11px] font-bold uppercase tracking-wider text-emerald-600";
+            } else {
+                badgeEl.innerText = "Reader Feedback";
+                badgeEl.className = "text-[11px] font-bold uppercase tracking-wider text-[#FF500A]";
+            }
+
+            document.getElementById('feedback-target-type').value = type;
+            document.getElementById('feedback-target-prod-id').value = id;
+            document.getElementById('feedback-modal-book-title').innerText = item.title;
+            renderModalFeedbackList(type, id);
+            document.getElementById('feedback-modal').classList.remove('hidden');
+        };
+
+        window.closeFeedbackModal = () => {
+            document.getElementById('feedback-modal').classList.add('hidden');
+            document.getElementById('feedback-target-type').value = "";
+            document.getElementById('feedback-target-prod-id').value = "";
+        };
+
+        function renderModalFeedbackList(type, id) {
+            const item = getTargetCachedItem(type, id);
+            const container = document.getElementById('feedback-list-container');
+            if (!item || !item.feedbacks || item.feedbacks.length === 0) {
+                container.innerHTML = `<p class="text-center text-sm text-slate-400 py-8">No feedback yet. Be the first to leave a comment!</p>`;
+                return;
+            }
+            container.innerHTML = item.feedbacks.map(fb => `
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-bold text-xs text-slate-900"><i class="fas fa-user-circle text-[#FF500A] mr-1"></i> ${window.escapeHTML(fb.name)}</span>
+                        <span class="text-[11px] text-slate-400">${fb.date || ''}</span>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed">${window.escapeHTML(fb.comment)}</p>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('visitor-feedback-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const type = document.getElementById('feedback-target-type').value;
+            const id = document.getElementById('feedback-target-prod-id').value;
+            const name = document.getElementById('visitor-name-input').value.trim();
+            const comment = document.getElementById('visitor-comment-input').value.trim();
+            const btn = document.getElementById('submit-feedback-btn');
+
+            const docRef = getTargetDocRef(type, id);
+            if (!docRef || !name || !comment) return;
+
+            btn.disabled = true;
+            btn.innerText = "...";
+            const todayStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            try {
+                await setDoc(docRef, {
+                    feedbacks: arrayUnion({ name, comment, date: todayStr })
+                }, { merge: true });
+                document.getElementById('visitor-comment-input').value = "";
+            } catch (err) {
+                alert("Could not submit feedback: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Send";
+            }
+        });
+
+        // ==================== 7. UNIVERSAL ADMIN CONTROL FOR HEARTS & FEEDBACK ====================
+        window.adminSaveHearts = async (type, id) => {
+            if (!window.firebaseCurrentUser) return alert("Unauthorized!");
+            const inputEl = document.getElementById(`admin-heart-input-${type}-${id}`);
+            const newCount = parseInt(inputEl.value, 10);
+            if (isNaN(newCount) || newCount < 0) return alert("Please enter a valid number (0 or higher).");
+
+            const docRef = getTargetDocRef(type, id);
+            if (!docRef) return;
+
+            try {
+                await setDoc(docRef, { hearts: newCount }, { merge: true });
+                alert("Heart count updated!");
+            } catch (err) {
+                alert("Error updating hearts: " + err.message);
+            }
+        };
+
+        window.adminEditFeedback = async (type, id, index) => {
+            if (!window.firebaseCurrentUser) return alert("Unauthorized!");
+            const item = getTargetCachedItem(type, id);
+            if (!item || !item.feedbacks || !item.feedbacks[index]) return;
+
+            const currentFb = item.feedbacks[index];
+            const updatedName = prompt("Edit Visitor Name:", currentFb.name);
+            if (updatedName === null) return;
+
+            const updatedComment = prompt("Edit Feedback Comment:", currentFb.comment);
+            if (updatedComment === null) return;
+
+            const updatedList = [...item.feedbacks];
+            updatedList[index] = {
+                ...currentFb,
+                name: updatedName.trim() || currentFb.name,
+                comment: updatedComment.trim() || currentFb.comment
+            };
+
+            const docRef = getTargetDocRef(type, id);
+            try {
+                await setDoc(docRef, { feedbacks: updatedList }, { merge: true });
+                alert("Feedback updated!");
+            } catch (err) {
+                alert("Error editing feedback: " + err.message);
+            }
+        };
+
+        window.adminDeleteFeedback = async (type, id, index) => {
+            if (!window.firebaseCurrentUser) return alert("Unauthorized!");
+            const item = getTargetCachedItem(type, id);
+            if (!item || !item.feedbacks || !item.feedbacks[index]) return;
+
+            if (!confirm("Delete this visitor feedback?")) return;
+
+            const updatedList = item.feedbacks.filter((_, idx) => idx !== index);
+            const docRef = getTargetDocRef(type, id);
+            try {
+                await setDoc(docRef, { feedbacks: updatedList }, { merge: true });
+            } catch (err) {
+                alert("Error deleting feedback: " + err.message);
+            }
+        };
+
+        // ==================== 8. ADD OR UPDATE ROCKETR + CRYPTO BOOK ====================
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return alert("Unauthorized!");
+
+            const rawImgUrl = document.getElementById('prod-img').value.trim();
+            const rawRocketrUrl = document.getElementById('prod-link').value.trim();
+            const rawCryptoUrl = document.getElementById('prod-crypto-link').value.trim();
+
+            if (!rawImgUrl) return alert("Please enter a Cover Image URL!");
+            if (!rawRocketrUrl) return alert("Please enter a Rocketr Checkout URL!");
+
+            const imgUrl = normalizeUrl(rawImgUrl);
+            const rocketrUrl = normalizeUrl(rawRocketrUrl);
+            const cryptoUrl = rawCryptoUrl ? normalizeUrl(rawCryptoUrl) : "";
+            const categoryVal = getCleanCategory(document.getElementById('prod-category').value);
+            
+            const editId = document.getElementById('edit-prod-id').value;
+            const btn = document.getElementById('publish-prod-btn');
+            btn.disabled = true;
+            btn.innerText = editId ? "Updating..." : "Publishing...";
+
+            const productData = {
+                title: document.getElementById('prod-title').value.trim(),
+                price: document.getElementById('prod-price').value.trim(),
+                category: categoryVal,
+                desc: document.getElementById('prod-desc').value.trim(),
+                img: imgUrl,
+                rocketrLink: rocketrUrl,
+                cryptoLink: cryptoUrl
+            };
+
+            try {
+                if (editId) {
+                    productData.updatedAt = serverTimestamp();
+                    await updateDoc(doc(db, "products", editId), productData);
+                    alert("Book updated successfully!");
+                } else {
+                    productData.createdAt = serverTimestamp();
+                    productData.hearts = 0;
+                    productData.feedbacks = [];
+                    await addDoc(collection(db, "products"), productData);
+                    alert("New book published! It is now featured in the 30s 3D New Book Spotlight.");
+                }
+                window.resetProductForm();
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                if (!document.getElementById('edit-prod-id').value) {
+                    btn.innerHTML = `<i class="fas fa-plus mr-1.5"></i> Publish Book to Store`;
+                }
+            }
+        });
+
+        window.deleteProduct = async (docId) => {
+            if (!window.firebaseCurrentUser) return;
+            if (confirm("Are you sure you want to permanently delete this book?")) {
+                try {
+                    await deleteDoc(doc(db, "products", docId));
+                    if (document.getElementById('edit-prod-id').value === docId) {
+                        window.resetProductForm();
+                    }
+                } catch (err) {
+                    alert("Delete failed: " + err.message);
+                }
+            }
+        };
+
+        // ==================== 9. SAVE FEATURED HERO FREEBIE ====================
+        document.getElementById('freebie-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return alert("Unauthorized!");
+
+            const rawImgUrl = document.getElementById('input-freebie-img').value.trim();
+            const rawPdfUrl = document.getElementById('input-freebie-link').value.trim();
+
+            if (!rawImgUrl) return alert("Please enter a Cover Image URL!");
+            if (!rawPdfUrl) return alert("Please enter a Direct PDF URL!");
+
+            const imgUrl = normalizeUrl(rawImgUrl);
+            const pdfUrl = normalizeUrl(rawPdfUrl);
+            const customFileName = document.getElementById('input-freebie-filename').value.trim();
+            const fileName = customFileName || extractFilenameFromUrl(pdfUrl, "GBTK-Featured-Gift.pdf");
+            const categoryVal = document.getElementById('input-freebie-category').value.trim();
+
+            const linkedBookId = document.getElementById('input-freebie-linked-book-id').value.trim();
+            const rawCustomBuyUrl = document.getElementById('input-freebie-custom-buy-url').value.trim();
+            const customBuyUrl = rawCustomBuyUrl ? normalizeUrl(rawCustomBuyUrl) : "";
+            const upsellText = document.getElementById('input-freebie-upsell-text').value.trim() || "Want the full 20+ page book or full sticker pack? See the complete set here";
+
+            const btn = document.getElementById('save-freebie-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+
+            try {
+                await setDoc(freebieDocRef, {
+                    title: document.getElementById('input-freebie-title').value.trim(),
+                    category: categoryVal,
+                    desc: document.getElementById('input-freebie-desc').value.trim(),
+                    img: imgUrl,
+                    link: pdfUrl,
+                    fileName: fileName,
+                    linkedBookId: linkedBookId,
+                    customBuyUrl: customBuyUrl,
+                    upsellText: upsellText,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+                alert("Featured Freebie updated live!");
+            } catch (err) {
+                alert("Error saving: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-save"></i> Save & Update Featured Freebie`;
+            }
+        });
+
+        window.resetFreebieToDefault = async () => {
+            if (!window.firebaseCurrentUser) return;
+            if (confirm("Reset Featured Freebie section back to default placeholder?")) {
+                await setDoc(freebieDocRef, {
+                    title: "GBTK STUDIO Free Printable Pack",
+                    category: "3D Clay Stickers",
+                    desc: "Download this high-resolution printable PDF pack completely free! Print at home or use digitally on your iPad.",
+                    img: window.DEFAULT_BRAND_IMAGE,
+                    link: "",
+                    fileName: "GBTK-Featured-Gift.pdf",
+                    linkedBookId: "",
+                    customBuyUrl: "",
+                    upsellText: "Want the full 20+ page book or full sticker pack? See the complete set here",
+                    hearts: 0,
+                    feedbacks: [],
+                    updatedAt: serverTimestamp()
+                });
+                alert("Featured Freebie section reset!");
+            }
+        };
+    </script>
+</body>
+</html>
