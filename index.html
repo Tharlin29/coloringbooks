@@ -335,6 +335,41 @@
             </div>
         </section>
 
+        <!-- ==================== ADMIN ANNOUNCEMENT / AFFILIATE BANNER (BELOW SHOWCASE) ==================== -->
+        <section id="studio-announcement-section" class="hidden relative overflow-hidden bg-gradient-to-r from-orange-50/85 via-amber-50/65 to-rose-50/65 border-b border-orange-200/80 py-5 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white/95 backdrop-blur-sm border-2 border-orange-200/90 rounded-2xl p-4 sm:p-5 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-3.5 min-w-0">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#FF500A] to-amber-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-orange-500/20 mt-0.5">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span id="display-ann-badge" class="bg-orange-100 text-[#FF500A] text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                                    AFFILIATE PROGRAM
+                                </span>
+                                <span id="active-ref-indicator" class="hidden bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                                    <i class="fas fa-link mr-1"></i> Referral Active
+                                </span>
+                            </div>
+                            <h3 id="display-ann-title" class="text-sm sm:text-base font-extrabold text-slate-900 leading-snug">
+                                Earn Commission by Sharing GBTK STUDIO Coloring Books!
+                            </h3>
+                            <p id="display-ann-message" class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed whitespace-pre-line">
+                                Join our Affiliate Program and earn rewards on every sale!
+                            </p>
+                        </div>
+                    </div>
+                    <div id="display-ann-cta-wrapper" class="shrink-0 self-start sm:self-center">
+                        <a id="display-ann-cta-btn" href="#support" onclick="handleAnnouncementCtaClick(event)" class="inline-flex items-center gap-2 bg-[#FF500A] hover:bg-[#e04304] text-white font-extrabold text-xs px-4 py-2.5 rounded-full shadow-md shadow-orange-500/20 transition active:scale-95">
+                            <span id="display-ann-cta-text">Join / Ask Details</span>
+                            <i class="fas fa-arrow-right text-[11px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- THIRD SECTION: PREMIUM BOOKS WITH SINGLE PAYMENT METHOD BUTTON -->
         <section id="store-section" class="py-12 bg-[#F8F9FA] px-4 sm:px-6 lg:px-8">
             <div class="max-w-6xl mx-auto">
@@ -344,7 +379,7 @@
                             <span class="w-1.5 h-6 rounded-full bg-[#FF500A]"></span>
                             <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Complete Editions &amp; Coloring Books</h2>
                         </div>
-                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Full-length digital books &amp; bundles. Click <strong>Payment Method</strong> on any edition to select USDT BEP20, BNB, KBZ PAY, WAVE MONEY, ROCKETR, or NOWPAYMENT.</p>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Full-length digital books &amp; bundles. Click <strong>Payment Method</strong> on any edition to apply a Promo Code and select USDT BEP20, BNB, KBZ PAY, WAVE MONEY, ROCKETR, or NOWPAYMENT.</p>
                     </div>
                     <div class="flex items-center gap-2 self-start sm:self-end">
                         <button onclick="quickAdminAdd('products')" class="admin-only-control hidden bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-full transition items-center gap-1.5 shadow-sm">
@@ -368,7 +403,7 @@
 
     </main>
 
-    <!-- ==================== PAYMENT METHOD SELECTOR MODAL (DROPDOWN SELECT BOX) ==================== -->
+    <!-- ==================== PAYMENT METHOD SELECTOR MODAL (DROPDOWN SELECT BOX + PROMO CODE) ==================== -->
     <div id="payment-method-modal" class="fixed inset-0 z-50 hidden bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 max-h-[92vh] flex flex-col">
             <!-- Header -->
@@ -441,8 +476,8 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Book Name / Transaction ID (Optional)</label>
-                        <input type="text" id="support-book-ref" maxlength="120" placeholder="e.g., Sweet December Coloring Book / TX Hash" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Book Name / Promo / Transaction ID (Optional)</label>
+                        <input type="text" id="support-book-ref" maxlength="160" placeholder="e.g., Sweet December Coloring Book / TX Hash" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#FF500A] outline-none text-sm">
                     </div>
 
                     <div>
@@ -516,7 +551,7 @@
                     <span class="bg-slate-900 text-white text-xs font-extrabold px-2.5 py-1 rounded-md">GBTK STUDIO ADMIN</span>
                     <h1 class="text-2xl font-extrabold text-slate-900">Dashboard &amp; Content Manager</h1>
                 </div>
-                <p id="admin-user-email" class="text-sm text-slate-500 mt-1">Manage Books, Direct Crypto Wallets, Myanmar QR, Customer Support Messages &amp; Free Gifts.</p>
+                <p id="admin-user-email" class="text-sm text-slate-500 mt-1">Manage Books, Announcements, Promo Codes (?re=), Direct Crypto Wallets, Myanmar QR &amp; Free Gifts.</p>
             </div>
             <div class="flex items-center gap-3">
                 <button onclick="switchView('user')" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition">
@@ -566,6 +601,9 @@
             </button>
             <button onclick="switchAdminTab('products')" id="tab-products" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap">
                 <i class="fas fa-book mr-2"></i>Premium Books Manager
+            </button>
+            <button onclick="switchAdminTab('affiliate')" id="tab-affiliate" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap">
+                <i class="fas fa-bullhorn mr-2"></i>Announcement &amp; Promo (?re=)
             </button>
             <button onclick="switchAdminTab('support')" id="tab-support" class="admin-tab px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap flex items-center gap-1.5">
                 <i class="fas fa-headset"></i><span>Support Inbox</span>
@@ -865,13 +903,116 @@
             </div>
         </div>
 
-        <!-- TAB 4: CUSTOMER SUPPORT INBOX -->
+        <!-- TAB 4: ANNOUNCEMENT BANNER (BELOW SHOWCASE), PROMO CODES & ?re= TRACKING -->
+        <div id="panel-affiliate" class="admin-panel hidden max-w-4xl space-y-6">
+            
+            <!-- 1. SHOWCASE-BELOW ANNOUNCEMENT / NOTIFICATION MANAGER -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
+                    <div>
+                        <span class="bg-orange-100 text-[#FF500A] text-[11px] font-extrabold px-2.5 py-0.5 rounded-full">SHOWCASE NOTIFICATION</span>
+                        <h3 class="text-lg font-bold text-slate-900 mt-1">Showcase အောက် ကြော်ငြာစာသား (Affiliate / Store News)</h3>
+                    </div>
+                    <label class="inline-flex items-center gap-2.5 cursor-pointer bg-orange-50 px-3.5 py-2 rounded-xl border border-orange-200">
+                        <input type="checkbox" id="ann-visible-toggle" class="w-4 h-4 accent-[#FF500A] rounded">
+                        <span class="text-xs font-extrabold text-slate-900">User များအား ပြသမည် (Show)</span>
+                    </label>
+                </div>
+                <p class="text-xs text-slate-500 mb-5">မပြချင်တော့သည့်အချိန်တွင် <strong>User များအား ပြသမည် (Show)</strong> အမှန်ခြစ်ကို ဖြုတ်ပြီး Save နှိပ်ပါက User ဘက်တွင် ချက်ချင်းပျောက်သွားပါမည်။</p>
+
+                <form id="announcement-settings-form" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Badge Label (ခေါင်းစဉ်ငယ်)</label>
+                            <input type="text" id="ann-badge-input" placeholder="e.g., AFFILIATE PROGRAM" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-[#FF500A]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Announcement Title (ခေါင်းစဉ်)</label>
+                            <input type="text" id="ann-title-input" required placeholder="e.g., Join GBTK STUDIO Affiliate Program!" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-[#FF500A]">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Message Body (User များဖတ်ရန် ကြော်ငြာစာသား)</label>
+                        <textarea id="ann-message-input" rows="3" required placeholder="Affiliate အကြောင်း သို့မဟုတ် User များကို ပြောချင်သည့် စာသားရေးပါ..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-[#FF500A]"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Button Text (ခလုတ်စာသား - Optional)</label>
+                            <input type="text" id="ann-cta-text-input" placeholder="e.g., Join Affiliate / Contact Us" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-[#FF500A]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Button Link URL (အလွတ်ထားပါက Support ပွင့်မည်)</label>
+                            <input type="url" id="ann-cta-url-input" placeholder="https://t.me/... (Optional)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs outline-none focus:ring-2 focus:ring-[#FF500A]">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="save-announcement-btn" class="bg-[#FF500A] hover:bg-[#e04304] text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-sm">
+                        <i class="fas fa-save mr-1.5"></i> Save Announcement Settings
+                    </button>
+                </form>
+            </div>
+
+            <!-- 2. ?re= REFERRAL LINK GENERATOR -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div>
+                    <span class="bg-emerald-100 text-emerald-800 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full">?re= TRACKING</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-1">Affiliate Referral Link (?re=) ထုတ်ရန်</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Affiliate မိတ်ဖက်တစ်ဦးချင်းစီအတွက် <code>?re=</code> ပါသော Link ထုတ်ပေးနိုင်ပါသည်။ Visitor ဝင်လာပါက ရက် (၃၀) အထိ ခြေရာခံမှတ်သားထားပြီး ငွေလွှဲပြေစာပို့ချိန်တွင် Admin ထံ အလိုအလျောက် ပါလာပါမည်။</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2.5">
+                    <input type="text" id="ref-generator-code" placeholder="Affiliate ID ရေးပါ (ဥပမာ- maya20)" oninput="updateGeneratedRefLink()" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-[#FF500A]">
+                    <button type="button" onclick="copyGeneratedRefLink()" class="bg-slate-900 hover:bg-[#FF500A] text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shrink-0">
+                        <i class="fas fa-copy mr-1.5"></i> Copy Referral Link
+                    </button>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <code id="generated-ref-preview" class="text-xs font-mono text-slate-700 break-all">https://coloringbooks-ten.vercel.app/?re=partner1</code>
+                </div>
+            </div>
+
+            <!-- 3. PROMO CODE MANAGER -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                <div>
+                    <span class="bg-amber-100 text-amber-900 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full">PROMO CODES</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-1">Promo Code များ ဖန်တီးရန်နှင့် ထိန်းချုပ်ရန်</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Customer များ ငွေပေးချေသည့် Modal ထဲတွင် Promo Code ရိုက်ထည့်ပါက Discount % အလိုအလျောက် တွက်ချက်ပေးပါမည်။</p>
+                </div>
+
+                <form id="promo-code-form" class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Promo Code</label>
+                        <input type="text" id="new-promo-code" required placeholder="e.g., GBTK20" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-bold uppercase outline-none focus:ring-2 focus:ring-[#FF500A]">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Discount (%)</label>
+                        <input type="number" id="new-promo-discount" required min="1" max="90" value="15" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm font-bold outline-none focus:ring-2 focus:ring-[#FF500A]">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Affiliate (?re=) Tag</label>
+                        <input type="text" id="new-promo-partner" placeholder="e.g., maya20 (Optional)" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-sm outline-none focus:ring-2 focus:ring-[#FF500A]">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" id="add-promo-btn" class="w-full bg-[#FF500A] hover:bg-[#e04304] text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow-sm">
+                            <i class="fas fa-plus mr-1"></i> Add Code
+                        </button>
+                    </div>
+                </form>
+
+                <div id="admin-promo-codes-list" class="space-y-2.5">
+                    <p class="text-xs text-slate-400 text-center py-4">No promo codes created yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: CUSTOMER SUPPORT INBOX -->
         <div id="panel-support" class="admin-panel hidden space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 mb-5">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900">Customer Support Messages</h3>
-                        <p class="text-xs sm:text-sm text-slate-500">Messages, payment confirmations, and questions sent by visitors on the website.</p>
+                        <p class="text-xs sm:text-sm text-slate-500">Messages, payment confirmations (with Promo &amp; ?re= tags), and questions sent by visitors.</p>
                     </div>
                     <span id="support-total-badge" class="self-start sm:self-auto text-xs font-extrabold bg-slate-100 text-slate-700 px-3 py-1.5 rounded-full">0 Messages</span>
                 </div>
@@ -882,7 +1023,7 @@
             </div>
         </div>
 
-        <!-- TAB 5: ENGAGEMENT CONTROL -->
+        <!-- TAB 6: ENGAGEMENT CONTROL -->
         <div id="panel-engagement" class="admin-panel hidden space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
@@ -917,7 +1058,7 @@
             </div>
         </div>
 
-        <!-- TAB 6: DIRECT WALLETS, MYANMAR QR, TELEGRAM & ADMIN SECURITY -->
+        <!-- TAB 7: DIRECT WALLETS, MYANMAR QR, TELEGRAM & ADMIN SECURITY -->
         <div id="panel-security" class="admin-panel hidden max-w-3xl space-y-6">
             
             <!-- Direct Crypto Wallets (USDT BEP20 & BNB) + Telegram Support -->
@@ -1128,9 +1269,7 @@
                 </button>
             </form>
         </div>
-    </div>
-
-    <!-- ==================== UI HELPER SCRIPT ==================== -->
+    </div>    <!-- ==================== UI HELPER SCRIPT ==================== -->
     <script>
         window.DEFAULT_BRAND_IMAGE = "https://raw.githubusercontent.com/Tharlin29/image/refs/heads/main/1795542505894.jpg";
         window.currentActiveView = 'user';
@@ -1139,7 +1278,19 @@
         window.selectedGiftCategory = 'All';
         window.selectedBookCategory = 'All';
 
-        // Direct Crypto Wallet & Telegram Settings
+        // Promo Code, ?re= Referral & Showcase Announcement State
+        window.promoCodesCache = {};
+        window.appliedPromo = null;
+        window.announcementSettings = {
+            visible: false,
+            badge: "AFFILIATE PROGRAM",
+            title: "",
+            message: "",
+            ctaText: "",
+            ctaUrl: ""
+        };
+
+        // Direct Crypto Wallet & Telegram Settings (Preserved Intact)
         window.directWalletSettings = {
             usdtBep20: "",
             usdtQr: "",
@@ -1160,7 +1311,7 @@
             </span>
         `;
 
-        // Official WavePay App Icon SVG (Yellow rounded square + Blue/Cyan circular swirl matching uploaded screenshot)
+        // Official WavePay App Icon SVG
         window.WAVE_OFFICIAL_ICON_SVG = `
             <svg class="w-6 h-6 shrink-0 rounded-md shadow-xs" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="64" height="64" rx="14" fill="#FFE600"/>
@@ -1198,6 +1349,103 @@
             if (formW) formW.innerHTML = `<div class="flex items-center justify-between">${window.WAVE_LOGO_SVG}<span class="text-[10px] font-extrabold text-amber-800 uppercase">QR / Wallet</span></div>`;
         };
         window.renderMyanmarLogoBadges();
+
+        // ==================== ?re= REFERRAL TRACKING SYSTEM (30-DAY STORAGE) ====================
+        window.initReferralTracker = function() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const reParam = (params.get('re') || params.get('ref') || '').trim();
+                if (reParam) {
+                    const cleanRef = reParam.replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
+                    if (cleanRef) {
+                        localStorage.setItem('gbtk_referral_data', JSON.stringify({
+                            code: cleanRef,
+                            expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+                        }));
+                    }
+                }
+            } catch (e) {}
+        };
+        window.initReferralTracker();
+
+        window.getActiveReferralCode = function() {
+            try {
+                const raw = localStorage.getItem('gbtk_referral_data');
+                if (!raw) return '';
+                const parsed = JSON.parse(raw);
+                if (parsed && parsed.code && (!parsed.expiresAt || parsed.expiresAt > Date.now())) {
+                    return parsed.code;
+                }
+                localStorage.removeItem('gbtk_referral_data');
+            } catch (e) {}
+            return '';
+        };
+
+        window.updateGeneratedRefLink = function() {
+            const raw = (document.getElementById('ref-generator-code')?.value || 'partner1').trim().replace(/[^a-zA-Z0-9_-]/g, '') || 'partner1';
+            const baseUrl = `${window.location.origin}${window.location.pathname}`;
+            const preview = document.getElementById('generated-ref-preview');
+            if (preview) preview.innerText = `${baseUrl}?re=${raw}`;
+        };
+
+        window.copyGeneratedRefLink = function() {
+            window.updateGeneratedRefLink();
+            const text = document.getElementById('generated-ref-preview')?.innerText || '';
+            if (text) window.copyTextValue(text, 'Affiliate Referral Link (?re=)');
+        };
+
+        window.handleAnnouncementCtaClick = function(e) {
+            const url = (window.announcementSettings.ctaUrl || '').trim();
+            if (!url || !url.startsWith('http')) {
+                e.preventDefault();
+                const ref = window.getActiveReferralCode();
+                window.openSupportModal(ref ? `Affiliate Program Inquiry (Ref: ?re=${ref})` : 'Affiliate Program Inquiry');
+            }
+        };
+
+        window.calculateDiscountedPriceText = function(priceStr, discountPercent) {
+            if (!priceStr || !discountPercent) return priceStr;
+            const match = String(priceStr).match(/(\d+(?:\.\d+)?)/);
+            if (!match) return `${priceStr} (-${discountPercent}%)`;
+            const origNum = parseFloat(match[1]);
+            const discounted = Math.max(0, origNum * (1 - discountPercent / 100));
+            const formatted = (origNum % 1 === 0 && discounted % 1 === 0) ? discounted.toFixed(0) : discounted.toFixed(2);
+            return String(priceStr).replace(match[1], formatted);
+        };
+
+        window.applyPromoCodeToModal = function(bookId) {
+            const inputEl = document.getElementById('modal-promo-input');
+            const statusEl = document.getElementById('modal-promo-status');
+            if (!inputEl || !statusEl) return;
+
+            const code = inputEl.value.trim().toUpperCase();
+            const p = window.productsCache[bookId];
+            if (!code) {
+                window.appliedPromo = null;
+                statusEl.innerHTML = `<span class="text-rose-600 font-bold">Please enter a Promo Code first.</span>`;
+                if (p) document.getElementById('pay-modal-book-title').innerText = `${p.title} (${p.price})`;
+                window.handlePaymentSelectChange(bookId);
+                return;
+            }
+
+            const promo = window.promoCodesCache[code];
+            if (!promo || promo.active === false) {
+                window.appliedPromo = null;
+                statusEl.innerHTML = `<span class="text-rose-600 font-bold"><i class="fas fa-times-circle mr-1"></i> Invalid or expired Promo Code.</span>`;
+                if (p) document.getElementById('pay-modal-book-title').innerText = `${p.title} (${p.price})`;
+                window.handlePaymentSelectChange(bookId);
+                return;
+            }
+
+            window.appliedPromo = promo;
+            const newPrice = p ? window.calculateDiscountedPriceText(p.price, promo.discountPercent) : '';
+            statusEl.innerHTML = `<span class="text-emerald-700 font-extrabold"><i class="fas fa-check-circle mr-1"></i> Code "${window.escapeHTML(promo.code)}" applied! (${promo.discountPercent}% OFF ${newPrice ? `→ New Price: ${window.escapeHTML(newPrice)}` : ''})</span>`;
+
+            if (p) {
+                document.getElementById('pay-modal-book-title').innerText = `${p.title} (${newPrice} — ${promo.discountPercent}% OFF)`;
+            }
+            window.handlePaymentSelectChange(bookId);
+        };
 
         window.syncTelegramUI = function() {
             const url = (window.directWalletSettings.telegramUrl || "").trim();
@@ -1238,7 +1486,7 @@
             alert(`${label} copied:\n${text}`);
         };
 
-        // Handle Dropdown Selection inside Payment Method Modal
+        // Handle Dropdown Selection inside Payment Method Modal (Preserves ALL Rocketr, NOWPayments, KPay, Wave, USDT, BNB Data)
         window.handlePaymentSelectChange = function(bookId) {
             const selectEl = document.getElementById('payment-method-dropdown');
             const displayArea = document.getElementById('payment-selected-details');
@@ -1260,14 +1508,29 @@
 
             const w = window.directWalletSettings || {};
             const mm = window.mmPaymentSettings || {};
-            const mmkNote = (p.mmkNote && p.mmkNote.trim()) ? p.mmkNote.trim() : p.price;
+            const activePromo = window.appliedPromo;
+            const activeRef = window.getActiveReferralCode() || (activePromo && activePromo.partnerRef ? activePromo.partnerRef : '');
+
+            const finalDisplayPrice = activePromo
+                ? `${window.calculateDiscountedPriceText(p.price, activePromo.discountPercent)} (Was ${p.price} • ${activePromo.discountPercent}% OFF)`
+                : p.price;
+
+            const baseMmk = (p.mmkNote && p.mmkNote.trim()) ? p.mmkNote.trim() : p.price;
+            const mmkNote = activePromo
+                ? `${window.calculateDiscountedPriceText(baseMmk, activePromo.discountPercent)} (-${activePromo.discountPercent}% Promo)`
+                : baseMmk;
+
             const tgUrl = (w.telegramUrl && w.telegramUrl.trim().startsWith('http')) ? w.telegramUrl.trim() : '';
 
             const usdtAddrSafe = window.escapeHTML(w.usdtBep20 || '').replace(/'/g, "\\'");
             const bnbAddrSafe = window.escapeHTML(w.bnbBep20 || '').replace(/'/g, "\\'");
             const kpayPhoneSafe = window.escapeHTML(mm.kpayPhone || '').replace(/'/g, "\\'");
             const wavePhoneSafe = window.escapeHTML(mm.wavePhone || '').replace(/'/g, "\\'");
-            const bookTitleSafe = window.escapeHTML(p.title).replace(/'/g, "\\'");
+
+            let trackingTag = p.title;
+            if (activePromo) trackingTag += ` | Promo: ${activePromo.code} (-${activePromo.discountPercent}%)`;
+            if (activeRef) trackingTag += ` | Ref: ?re=${activeRef}`;
+            const bookTitleSafe = window.escapeHTML(trackingTag).replace(/'/g, "\\'");
 
             const confirmFooterHtml = `
                 <div class="pt-3 border-t border-slate-200/80 flex flex-col sm:flex-row gap-2">
@@ -1305,7 +1568,7 @@
                             </div>
                         </div>
                         <p class="text-[11px] text-slate-600 leading-relaxed">
-                            Amount: <strong>${window.escapeHTML(p.price)}</strong> via <strong>BNB Smart Chain (BEP20)</strong>. Send your TX hash/screenshot after payment to receive your PDF.
+                            Amount: <strong>${window.escapeHTML(finalDisplayPrice)}</strong> via <strong>BNB Smart Chain (BEP20)</strong>. Send your TX hash/screenshot after payment to receive your PDF.
                         </p>
                         ${confirmFooterHtml}
                     </div>
@@ -1332,7 +1595,7 @@
                             </div>
                         </div>
                         <p class="text-[11px] text-slate-600 leading-relaxed">
-                            Amount: <strong>${window.escapeHTML(p.price)}</strong> worth of BNB on <strong>BSC (BEP20)</strong>. Send your TX hash/screenshot after payment to receive your PDF.
+                            Amount: <strong>${window.escapeHTML(finalDisplayPrice)}</strong> worth of BNB on <strong>BSC (BEP20)</strong>. Send your TX hash/screenshot after payment to receive your PDF.
                         </p>
                         ${confirmFooterHtml}
                     </div>
@@ -1391,14 +1654,15 @@
                         <div class="inline-flex items-center gap-2 bg-[#FF500A] text-white text-xs font-extrabold px-3 py-1 rounded-full">
                             <i class="fas fa-rocket"></i> ROCKETR CHECKOUT
                         </div>
-                        <p class="text-xs text-slate-600">Pay securely for <strong>${window.escapeHTML(p.title)}</strong> (${window.escapeHTML(p.price)}) via Rocketr.</p>
+                        <p class="text-xs text-slate-600">Pay securely for <strong>${window.escapeHTML(p.title)}</strong> (${window.escapeHTML(finalDisplayPrice)}) via Rocketr.</p>
+                        ${activePromo ? `<p class="text-[11px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg">Use Promo Code <strong>${window.escapeHTML(activePromo.code)}</strong> (${activePromo.discountPercent}% OFF) at Rocketr checkout if prompted!</p>` : ''}
                         ${rocketrUrl ? `
                             <div class="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-orange-200 text-left">
                                 <code class="text-[11px] font-mono text-slate-700 break-all flex-1">${window.escapeHTML(rocketrUrl)}</code>
                                 <button type="button" onclick="copyTextValue('${rocketrSafe}', 'Rocketr Link')" class="shrink-0 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg">Copy</button>
                             </div>
                             <a href="${rocketrUrl}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-[#FF500A] hover:bg-[#e04304] text-white font-extrabold text-sm py-3 px-5 rounded-xl shadow-md transition">
-                                <span>Pay via Rocketr (${window.escapeHTML(p.price)})</span>
+                                <span>Pay via Rocketr (${window.escapeHTML(finalDisplayPrice)})</span>
                                 <i class="fas fa-external-link-alt text-xs"></i>
                             </a>
                         ` : `
@@ -1416,14 +1680,14 @@
                         <div class="inline-flex items-center gap-2 bg-indigo-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">
                             <i class="fas fa-bolt"></i> NOWPAYMENTS CRYPTO GATEWAY
                         </div>
-                        <p class="text-xs text-slate-600">Pay with crypto via NOWPayments for <strong>${window.escapeHTML(p.title)}</strong> (${window.escapeHTML(p.price)}).</p>
+                        <p class="text-xs text-slate-600">Pay with crypto via NOWPayments for <strong>${window.escapeHTML(p.title)}</strong> (${window.escapeHTML(finalDisplayPrice)}).</p>
                         ${nowUrl ? `
                             <div class="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-indigo-200 text-left">
                                 <code class="text-[11px] font-mono text-slate-700 break-all flex-1">${window.escapeHTML(nowUrl)}</code>
                                 <button type="button" onclick="copyTextValue('${nowSafe}', 'NOWPayments Link')" class="shrink-0 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg">Copy</button>
                             </div>
                             <a href="${nowUrl}" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm py-3 px-5 rounded-xl shadow-md transition">
-                                <span>Pay via NOWPayments (${window.escapeHTML(p.price)})</span>
+                                <span>Pay via NOWPayments (${window.escapeHTML(finalDisplayPrice)})</span>
                                 <i class="fas fa-external-link-alt text-xs"></i>
                             </a>
                         ` : `
@@ -1440,9 +1704,28 @@
             const p = window.productsCache[bookId];
             if (!p) return;
 
+            window.appliedPromo = null;
+            const activeRef = window.getActiveReferralCode();
             document.getElementById('pay-modal-book-title').innerText = `${p.title} (${p.price})`;
 
             document.getElementById('pay-modal-body').innerHTML = `
+                <!-- Promo Code Input Box & ?re= Referral Indicator -->
+                <div class="p-3.5 rounded-2xl bg-orange-50/75 border border-orange-200/90 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label for="modal-promo-input" class="text-[11px] font-extrabold uppercase tracking-wider text-slate-800">
+                            <i class="fas fa-tag text-[#FF500A] mr-1"></i> Have a Promo Code?
+                        </label>
+                        ${activeRef ? `<span class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">Ref: ?re=${window.escapeHTML(activeRef)}</span>` : ''}
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="modal-promo-input" placeholder="Enter Promo Code" class="flex-1 px-3 py-2 rounded-xl border border-orange-200 bg-white text-xs font-extrabold uppercase outline-none focus:ring-2 focus:ring-[#FF500A]">
+                        <button type="button" onclick="applyPromoCodeToModal('${bookId}')" class="bg-slate-900 hover:bg-[#FF500A] text-white font-extrabold text-xs px-4 py-2 rounded-xl transition shrink-0">
+                            Apply
+                        </button>
+                    </div>
+                    <div id="modal-promo-status" class="text-[11px]"></div>
+                </div>
+
                 <div class="space-y-2">
                     <label for="payment-method-dropdown" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700">
                         Choose Payment Method
@@ -1482,8 +1765,13 @@
         window.openSupportModal = function(prefillBookTitle) {
             window.syncTelegramUI();
             const bookRefInput = document.getElementById('support-book-ref');
-            if (bookRefInput && typeof prefillBookTitle === 'string' && prefillBookTitle.trim()) {
-                bookRefInput.value = `Payment / Inquiry: ${prefillBookTitle.trim()}`;
+            const activeRef = window.getActiveReferralCode();
+            if (bookRefInput) {
+                if (typeof prefillBookTitle === 'string' && prefillBookTitle.trim()) {
+                    bookRefInput.value = `Payment / Inquiry: ${prefillBookTitle.trim()}`;
+                } else if (activeRef) {
+                    bookRefInput.value = `Referral: ?re=${activeRef}`;
+                }
             }
             document.getElementById('support-modal').classList.remove('hidden');
         };
@@ -1867,7 +2155,7 @@
             if (type === 'featured') {
                 const f = window.featuredFreebieData;
                 const isLiked = !!likedPosts['featured_hero'];
-                const safeTitleAttr = window.escapeHTML(f.title).replace(/'/g, "\'");
+                const safeTitleAttr = window.escapeHTML(f.title).replace(/'/g, "\\'");
                 const itemCat = (f.category && f.category.trim()) ? f.category.trim() : "Featured Gift";
 
                 const linkedBook = (f.linkedBookId && window.productsCache[f.linkedBookId]) ? window.productsCache[f.linkedBookId] : null;
@@ -1877,7 +2165,7 @@
                     : "Want the full 20+ page book or full sticker pack? See the complete set here";
 
                 const safeLinkedId = linkedBook ? f.linkedBookId : '';
-                const safeCustomUrlAttr = customUrl.replace(/'/g, "\'");
+                const safeCustomUrlAttr = customUrl.replace(/'/g, "\\'");
 
                 let upsellBoxHtml = `
                     <div class="mt-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 border border-orange-200 text-left">
@@ -1941,7 +2229,7 @@
                 const g = window.freeGiftsCache[id];
                 if (!g) return;
                 const isLiked = !!likedPosts[`gift_${id}`];
-                const safeTitleAttr = window.escapeHTML(g.title).replace(/'/g, "\'");
+                const safeTitleAttr = window.escapeHTML(g.title).replace(/'/g, "\\'");
                 const itemCat = (g.category && g.category.trim()) ? g.category.trim() : "General";
 
                 const linkedBook = (g.linkedBookId && window.productsCache[g.linkedBookId]) ? window.productsCache[g.linkedBookId] : null;
@@ -1951,7 +2239,7 @@
                     : "Want the full 20+ page book or full sticker pack? See the complete set here";
 
                 const safeLinkedId = linkedBook ? g.linkedBookId : '';
-                const safeCustomUrlAttr = customUrl.replace(/'/g, "\'");
+                const safeCustomUrlAttr = customUrl.replace(/'/g, "\\'");
 
                 let upsellBoxHtml = `
                     <div class="mt-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 border border-orange-200 text-left">
@@ -2015,7 +2303,7 @@
                 const p = window.productsCache[id];
                 if (!p) return;
                 const isLiked = !!likedPosts[`book_${id}`];
-                const safeTitleAttr = window.escapeHTML(p.title).replace(/'/g, "\'");
+                const safeTitleAttr = window.escapeHTML(p.title).replace(/'/g, "\\'");
                 const itemCat = (p.category && p.category.trim()) ? p.category.trim() : "General";
 
                 badge.innerText = "COMPLETE DIGITAL EDITION";
@@ -2237,7 +2525,9 @@
         };
 
         window.sharePost = async function(title, hashAnchor) {
-            const shareUrl = `${window.location.origin}${window.location.pathname}#${hashAnchor}`;
+            const activeRef = window.getActiveReferralCode();
+            const refQuery = activeRef ? `?re=${encodeURIComponent(activeRef)}` : '';
+            const shareUrl = `${window.location.origin}${window.location.pathname}${refQuery}#${hashAnchor}`;
             if (navigator.share) {
                 try {
                     await navigator.share({
@@ -2260,6 +2550,7 @@
         };
 
         window.rebuildShowcaseSlides([]);
+        window.updateGeneratedRefLink();
     </script>
 
     <!-- ==================== FIREBASE SDK & LOGIC ==================== -->
@@ -2362,6 +2653,178 @@
             if (currentHeroVal) heroSelect.value = currentHeroVal;
         }
 
+        // ==================== ANNOUNCEMENT BANNER & PROMO CODES SYNC ====================
+        const announcementDocRef = doc(db, "settings", "announcement");
+        onSnapshot(announcementDocRef, (snap) => {
+            const secEl = document.getElementById('studio-announcement-section');
+            if (snap.exists()) {
+                const d = snap.data();
+                window.announcementSettings = {
+                    visible: !!d.visible,
+                    badge: d.badge || "AFFILIATE PROGRAM",
+                    title: d.title || "",
+                    message: d.message || "",
+                    ctaText: d.ctaText || "",
+                    ctaUrl: d.ctaUrl || ""
+                };
+
+                const toggleEl = document.getElementById('ann-visible-toggle');
+                if (toggleEl) toggleEl.checked = window.announcementSettings.visible;
+                if (document.getElementById('ann-badge-input')) document.getElementById('ann-badge-input').value = window.announcementSettings.badge;
+                if (document.getElementById('ann-title-input')) document.getElementById('ann-title-input').value = window.announcementSettings.title;
+                if (document.getElementById('ann-message-input')) document.getElementById('ann-message-input').value = window.announcementSettings.message;
+                if (document.getElementById('ann-cta-text-input')) document.getElementById('ann-cta-text-input').value = window.announcementSettings.ctaText;
+                if (document.getElementById('ann-cta-url-input')) document.getElementById('ann-cta-url-input').value = window.announcementSettings.ctaUrl;
+
+                if (secEl) {
+                    if (window.announcementSettings.visible && (window.announcementSettings.title || window.announcementSettings.message)) {
+                        document.getElementById('display-ann-badge').innerText = window.announcementSettings.badge;
+                        document.getElementById('display-ann-title').innerText = window.announcementSettings.title;
+                        document.getElementById('display-ann-message').innerText = window.announcementSettings.message;
+
+                        const ctaWrap = document.getElementById('display-ann-cta-wrapper');
+                        const ctaBtn = document.getElementById('display-ann-cta-btn');
+                        const ctaTextEl = document.getElementById('display-ann-cta-text');
+                        if (window.announcementSettings.ctaText.trim()) {
+                            ctaTextEl.innerText = window.announcementSettings.ctaText.trim();
+                            ctaBtn.href = window.announcementSettings.ctaUrl.trim() || "#support";
+                            ctaWrap.classList.remove('hidden');
+                        } else {
+                            ctaWrap.classList.add('hidden');
+                        }
+
+                        const activeRef = window.getActiveReferralCode();
+                        const refBadge = document.getElementById('active-ref-indicator');
+                        if (refBadge) {
+                            if (activeRef) {
+                                refBadge.innerHTML = `<i class="fas fa-link mr-1"></i> Ref: ?re=${window.escapeHTML(activeRef)}`;
+                                refBadge.classList.remove('hidden');
+                            } else {
+                                refBadge.classList.add('hidden');
+                            }
+                        }
+
+                        secEl.classList.remove('hidden');
+                    } else {
+                        secEl.classList.add('hidden');
+                    }
+                }
+            } else if (secEl) {
+                secEl.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('announcement-settings-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return alert("Unauthorized! Please login as Admin.");
+
+            const btn = document.getElementById('save-announcement-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-1.5"></i> Saving...`;
+
+            const rawUrl = document.getElementById('ann-cta-url-input').value.trim();
+            try {
+                await setDoc(announcementDocRef, {
+                    visible: document.getElementById('ann-visible-toggle').checked,
+                    badge: document.getElementById('ann-badge-input').value.trim() || "AFFILIATE PROGRAM",
+                    title: document.getElementById('ann-title-input').value.trim(),
+                    message: document.getElementById('ann-message-input').value.trim(),
+                    ctaText: document.getElementById('ann-cta-text-input').value.trim(),
+                    ctaUrl: rawUrl ? normalizeUrl(rawUrl) : "",
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+                alert("Announcement settings saved!");
+            } catch (err) {
+                alert("Error saving announcement: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-save mr-1.5"></i> Save Announcement Settings`;
+            }
+        });
+
+        const promoCodesCol = collection(db, "promoCodes");
+        onSnapshot(promoCodesCol, (snapshot) => {
+            window.promoCodesCache = {};
+            const listEl = document.getElementById('admin-promo-codes-list');
+
+            if (snapshot.empty) {
+                if (listEl) listEl.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No promo codes created yet.</p>`;
+                return;
+            }
+
+            let html = '';
+            snapshot.forEach((docSnap) => {
+                const d = docSnap.data();
+                const codeKey = (d.code || '').toUpperCase();
+                if (codeKey) {
+                    window.promoCodesCache[codeKey] = { id: docSnap.id, ...d, code: codeKey };
+                }
+                const isActive = d.active !== false;
+                html += `
+                    <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl border ${isActive ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-200 opacity-70'}">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-orange-100 text-[#FF500A] font-mono font-extrabold text-xs px-2.5 py-1 rounded-lg">${window.escapeHTML(codeKey)}</span>
+                            <span class="text-xs font-extrabold text-emerald-700">${d.discountPercent}% OFF</span>
+                            ${d.partnerRef ? `<span class="text-[11px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded">?re=${window.escapeHTML(d.partnerRef)}</span>` : ''}
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="togglePromoActive('${docSnap.id}', ${!isActive})" class="px-2.5 py-1 rounded-lg text-[11px] font-bold border ${isActive ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-slate-200 border-slate-300 text-slate-600'}">
+                                ${isActive ? 'Active' : 'Paused'}
+                            </button>
+                            <button type="button" onclick="deletePromoCode('${docSnap.id}')" class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            if (listEl) listEl.innerHTML = html;
+        });
+
+        document.getElementById('promo-code-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!window.firebaseCurrentUser) return alert("Unauthorized! Please login as Admin.");
+
+            const code = document.getElementById('new-promo-code').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+            const discountPercent = parseInt(document.getElementById('new-promo-discount').value, 10);
+            const partnerRef = document.getElementById('new-promo-partner').value.trim().replace(/[^a-zA-Z0-9_-]/g, '');
+
+            if (!code || isNaN(discountPercent) || discountPercent < 1 || discountPercent > 90) {
+                return alert("Please enter a valid Promo Code and Discount % (1-90).");
+            }
+
+            const btn = document.getElementById('add-promo-btn');
+            btn.disabled = true;
+            try {
+                await setDoc(doc(db, "promoCodes", code), {
+                    code,
+                    discountPercent,
+                    partnerRef,
+                    active: true,
+                    createdAt: serverTimestamp()
+                });
+                e.target.reset();
+                document.getElementById('new-promo-discount').value = 15;
+                alert(`Promo Code "${code}" (${discountPercent}% OFF) created!`);
+            } catch (err) {
+                alert("Error creating promo code: " + err.message);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        window.togglePromoActive = async (docId, newState) => {
+            if (!window.firebaseCurrentUser) return;
+            await updateDoc(doc(db, "promoCodes", docId), { active: newState });
+        };
+
+        window.deletePromoCode = async (docId) => {
+            if (!window.firebaseCurrentUser) return;
+            if (confirm("Delete this Promo Code?")) {
+                await deleteDoc(doc(db, "promoCodes", docId));
+            }
+        };
+
         // ==================== DIRECT CRYPTO WALLETS & TELEGRAM SYNC ====================
         const directWalletsDocRef = doc(db, "settings", "directWallets");
         onSnapshot(directWalletsDocRef, (snap) => {
@@ -2424,6 +2887,7 @@
             const contact = document.getElementById('support-sender-contact').value.trim();
             const bookRef = document.getElementById('support-book-ref').value.trim();
             const message = document.getElementById('support-message-text').value.trim();
+            const activeRef = window.getActiveReferralCode();
             const btn = document.getElementById('send-support-btn');
 
             if (!name || !contact || !message) return;
@@ -2436,6 +2900,7 @@
                     name,
                     contact,
                     bookRef,
+                    referralCode: activeRef || "",
                     message,
                     resolved: false,
                     createdAt: serverTimestamp()
@@ -2504,6 +2969,7 @@
                                     </span>
                                     <h4 class="font-extrabold text-sm text-slate-900">${window.escapeHTML(m.name)}</h4>
                                     <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">${window.escapeHTML(m.contact)}</span>
+                                    ${m.referralCode ? `<span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">?re=${window.escapeHTML(m.referralCode)}</span>` : ''}
                                     <span class="text-[11px] text-slate-400">${dateStr}</span>
                                 </div>
                                 ${m.bookRef ? `<p class="text-xs font-bold text-slate-700"><i class="fas fa-tag text-[#FF500A] mr-1"></i> ${window.escapeHTML(m.bookRef)}</p>` : ''}
@@ -2881,7 +3347,7 @@
 
             categories.forEach(cat => {
                 const isActive = activeCategory === cat;
-                const safeCatAttr = window.escapeHTML(cat).replace(/'/g, "\'");
+                const safeCatAttr = window.escapeHTML(cat).replace(/'/g, "\\'");
                 html += `
                     <button onclick="${clickFnName}('${safeCatAttr}')" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap border ${isActive ? `${activeBgClass} text-white border-transparent shadow-sm` : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'}">
                         ${window.escapeHTML(cat)} <span class="opacity-75">(${counts[cat]})</span>
@@ -2932,12 +3398,12 @@
 
                 const isLiked = !!likedPosts[`gift_${id}`];
                 const heartIconClass = isLiked ? "fas fa-heart text-rose-500" : "far fa-heart text-slate-400 group-hover:text-rose-500";
-                const safeTitleAttr = window.escapeHTML(g.title).replace(/'/g, "\'");
+                const safeTitleAttr = window.escapeHTML(g.title).replace(/'/g, "\\'");
 
                 const linkedBook = (g.linkedBookId && window.productsCache[g.linkedBookId]) ? window.productsCache[g.linkedBookId] : null;
                 const customUrl = (g.customBuyUrl && g.customBuyUrl.trim().startsWith('http')) ? g.customBuyUrl.trim() : '';
                 const safeLinkedId = linkedBook ? g.linkedBookId : '';
-                const safeCustomUrlAttr = customUrl.replace(/'/g, "\'");
+                const safeCustomUrlAttr = customUrl.replace(/'/g, "\\'");
 
                 userGiftsHtml += `
                     <div id="gift-${id}" class="wattpad-card group flex flex-col">
@@ -2958,7 +3424,7 @@
                         </div>
 
                         ${itemCat !== 'General' ? `
-                        <span onclick="selectGiftCategory('${window.escapeHTML(itemCat).replace(/'/g, "\'")}')" class="self-start text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded mb-1 cursor-pointer hover:bg-emerald-100 transition">
+                        <span onclick="selectGiftCategory('${window.escapeHTML(itemCat).replace(/'/g, "\\'")}')" class="self-start text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded mb-1 cursor-pointer hover:bg-emerald-100 transition">
                             ${window.escapeHTML(itemCat)}
                         </span>` : ''}
 
@@ -3222,7 +3688,7 @@
 
                 const isLiked = !!likedPosts[`book_${id}`];
                 const heartIconClass = isLiked ? "fas fa-heart text-rose-500" : "far fa-heart text-slate-400 group-hover:text-rose-500";
-                const safeTitleAttr = window.escapeHTML(p.title).replace(/'/g, "\'");
+                const safeTitleAttr = window.escapeHTML(p.title).replace(/'/g, "\\'");
 
                 userHtml += `
                     <div id="book-${id}" class="wattpad-card group flex flex-col">
@@ -3243,7 +3709,7 @@
                         </div>
 
                         ${itemCat !== 'General' ? `
-                        <span onclick="selectBookCategory('${window.escapeHTML(itemCat).replace(/'/g, "\'")}')" class="self-start text-[10px] font-bold text-[#FF500A] bg-orange-50 border border-orange-200/80 px-2 py-0.5 rounded mb-1 cursor-pointer hover:bg-orange-100 transition">
+                        <span onclick="selectBookCategory('${window.escapeHTML(itemCat).replace(/'/g, "\\'")}')" class="self-start text-[10px] font-bold text-[#FF500A] bg-orange-50 border border-orange-200/80 px-2 py-0.5 rounded mb-1 cursor-pointer hover:bg-orange-100 transition">
                             ${window.escapeHTML(itemCat)}
                         </span>` : ''}
 
@@ -3703,3 +4169,5 @@
     </script>
 </body>
 </html>
+
+<!-- ==================== END OF PART 1 (PASTE PART 2 DIRECTLY BELOW THIS LINE) ==================== -->
